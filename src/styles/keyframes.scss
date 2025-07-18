@@ -1,0 +1,41 @@
+/* 动画 */
+
+@keyframes floating-points {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    95% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(
+            calc(var(--h-card) / 1.75),
+            calc(var(--h-card) / 1.5)
+        );
+    }
+}
+
+@keyframes bellRing {
+    0%,
+    100% {
+        transform-origin: top;
+    }
+    15% {
+        transform: rotate(10deg);
+    }
+    30% {
+        transform: rotate(-10deg);
+    }
+    45% {
+        transform: rotate(5deg);
+    }
+    60% {
+        transform: rotate(-5deg);
+    }
+    75% {
+        transform: rotate(2deg);
+    }
+}

@@ -1,0 +1,412 @@
+:root {
+    --ne-font-family: -apple-system,blinkmacsystemfont,"Segoe UI",roboto,"Helvetica Neue",arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    --ne-primary: var(--el-color-primary);
+    --ne-primary-light-9: var(--el-color-primary-light-9);
+    --ne-slide-deep: #fff;
+    --ne-slide: #fff;
+    --ne-slide-width: 287px;
+    --ne-vert-slide-width: 224px;
+    --ne-background-deep: #f5f7f9;
+    --ne-border: #E4E4E7;
+    --ne-foreground: #474A4D;
+    --ne-muted-foreground: #71717a;
+    --ne-header: #fff;
+    --ne-card: #fff;
+    --ne-accent: #F4F4F5;
+} 
+
+::view-transition-new(root),::view-transition-old(root) {
+    animation: none;
+    mix-blend-mode: normal
+}
+
+::view-transition-old(root) {
+    z-index: 1
+}
+
+::view-transition-new(root) {
+    z-index: 100
+}
+
+::-webkit-scrollbar {
+    @apply w-[6px] h-[6px];
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-[var(--ne-scrollbar)] rounded-[3px];
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-transparent;
+}
+
+/** 暗黑主题 */
+html.dark {
+    --ne-slide: #1C1E23;
+    --ne-slide-deep: #131518;
+    --ne-background-deep: #14161A;
+    --ne-border: #36363A;
+    --ne-foreground: #e2e2e2;
+    --ne-muted-foreground: #b2b2b3;
+    --ne-header: #1C1E23;
+    --ne-card: #1C1E23;
+    --ne-accent: #2c2c2d;
+
+    .el-table {
+        --el-table-header-bg-color: #2E3033;
+        --el-table-header-text-color: #95A3A7;
+    }
+}
+
+html.dark::view-transition-old(root) {
+    z-index: 100
+}
+
+html.dark::view-transition-new(root) {
+    z-index: 1
+}
+
+/** 灰色侧边栏模式 */
+.is-dark {
+    --ne-slide: #1C1E23;
+    --ne-slide-deep: #131518;
+    --ne-foreground: #ebebeb;
+    --ne-accent: #2c2c2d;
+}
+
+html,
+body {
+    @apply wh-full text-[var(--ne-foreground)] font-[var(--ne-font-family)] text-md bg-[var(--ne-background-deep)] overflow-hidden;
+}
+
+#app {
+    @apply wh-full;
+}
+
+.border-primary {
+    @apply border-[var(--ne-primary)];
+}
+
+.border-default {
+    @apply border-[var(--ne-border)];
+}
+
+/** 分割线 */
+.el-divider.bg-default {
+    .el-divider__text {
+        @apply bg-[var(--ne-background-deep)];
+    }
+    &.is-primary {
+        .el-divider__text {
+            @apply text-xl text-[var(--el-color-info-light-4)];
+        }
+    }
+}
+
+/** layout */
+.neon-wrapper {
+    @apply flex h-full;
+}
+
+/** logo */
+.neon-logo {
+    @apply fx-start gap-[10px] mt-[15px] mb-[20px];
+    img {
+        @apply w-[40px] h-[40px];
+    }
+}
+
+/** el-menu */
+.el-menu.neon-sub-menu {
+    @apply p-[8px];
+    .el-sub-menu__title,
+    li {
+        @apply mb-[2px] rounded-md;
+    }
+    .el-menu-item {
+        @apply hover:bg-[var(--ne-accent)] dark:hover:bg-[var(--ne-accent)];
+        &.is-active {
+            @apply text-[var(--ne-primary)] dark:text-[var(--ne-foreground)] bg-[var(--el-color-primary-light-9)] dark:bg-[var(--ne-accent)];
+        }
+        &:last-child {
+            @apply mb-0;
+        }
+    }
+    .neon-sub-menu-content {
+        @apply flex items-center
+    }
+}
+
+
+// 侧边栏
+.el-aside {
+    &.neon-slide {
+        @apply flex w-[var(--ne-slide-width)] h-full transition-all duration-200;
+        &.is-close {
+            @apply w-[65px];
+            .neon-menu {
+                @apply w-0 overflow-hidden;
+            }
+        }
+        &.vertical-slide {
+            @apply w-[var(--ne-vert-slide-width)] bg-[var(--ne-slide)] dark:bg-[var(--ne-slide-deep)];
+            .neon-logo {
+                @apply w-full px-[10px] mb-[15px];
+            }
+            .el-menu {
+                @apply bg-[var(--ne-slide)];
+                &.el-menu--vertical {
+                    @apply px-[6px];
+                }
+            }
+            .el-sub-menu__title,
+            .el-menu-item {
+                @apply text-[var(--ne-foreground)] hover:bg-[var(--ne-accent)];
+                &.is-active {
+                    @apply text-[var(--ne-primary)] dark:text-[var(--ne-foreground)];
+                }
+            }
+            &.is-dark {
+                .el-sub-menu__title,
+                .el-menu-item {
+                    &:hover,
+                    &.is-active {
+                        @apply text-[var(--ne-foreground)] bg-[var(--ne-accent)];
+                    }
+                }
+            }
+        }
+    }
+}
+
+// 侧边栏主导航
+.neon-menu-bar {
+    @apply fx-center flex-col w-[65px] h-full border-r border-[var(--ne-border)] bg-[var(--ne-slide-deep)];
+    .neon-sub-menu-content {
+        @apply w-full;
+        i {
+            @apply text-md transition duration-200;
+        }
+        &:hover,
+        &.is-active {
+            i {
+                @apply scale-[1.2];
+            }
+        }
+        &:hover {
+            @apply hover:bg-[var(--ne-accent)];
+        }
+        &.is-active {
+            @apply bg-[var(--ne-primary)] hover:bg-[var(--ne-primary)] text-[var(--ne-primary)];
+        }
+    }
+    .neon-normal-menu__name {
+        @apply text-sm;
+    }
+    .neon-normal-menu {
+        @apply flex-1 wh-full overflow-hidden;
+        ul {
+            @apply fx-col gap-[10px] px-[5px] pb-[10px];
+            li {
+                @apply fx-center flex-col gap-[8px] w-full h-[60px] rounded-md text-center text-[var(--ne-foreground)] transition-all cursor-pointer;
+                i {
+                    @apply transition duration-200;
+                }
+                &.is-active {
+                    @apply text-white bg-[var(--el-color-primary)];
+                }
+            }
+        }
+    }
+    &.is-dark {
+        @apply bg-[var(--ne-slide-deep)];
+    }
+}
+
+// 侧边栏子导航
+.neon-menu {
+    @apply relative fx-col w-[222px] bg-[var(--ne-slide)] before:content-[''] before:absolute before:top-0 before:bottom-0 before:right-0 before:w-[1px] before:border-r before:border-[var(--ne-border)] before:z-11 overflow-hidden transition-all duration-200;
+    .el-menu {
+        @apply border-r-none;
+    }
+    .neon-menu__title {
+        @apply w-full h-[50px] text-nowrap text-[var(--ne-foreground)] leading-[50px] border-b border-[var(--ne-border)] px-[15px] text-lg font-500;
+    }
+
+}
+
+// 右侧内容区
+.neon-main {
+    @apply flex-1 fx-col wh-full overflow-hidden;
+    .neon-main__content {
+        @apply flex-1 fx-col bg-[var(--ne-background-deep)] overflow-hidden;
+    }
+}
+
+/** 加载条 */
+#nprogress {
+    .bar {
+        @apply bg-[#0076FF];
+    }
+
+}
+
+/** breadcrumb */
+.neon-breadcrumb {
+    .el-breadcrumb__inner.is-link {
+        @apply font-normal;
+    }
+}
+
+/** 头部铃铛动画 */
+.bell-button {
+    @apply relative;
+    &:hover .el-icon {
+        @apply block animate-[bellRing_1s_both];
+    }
+}
+
+/** button */
+.neon-button {
+    @apply inline-flex items-center justify-center text-nowrap w-8 h-8 px-1 rounded-md hover:bg-[var(--ne-accent)] transition-colors outline-none cursor-pointer;
+    &.is-circle {
+        @apply rounded-full;
+    }
+}
+
+/** talbe */
+.neon-table {
+    @apply flex-1 relative z-[1] mb-[-1px];
+    .el-table__empty-text {
+        @apply leading-[36px];
+    }
+    .el-table__body {
+        td > div:empty {
+            @apply before:content-['--'];
+        }
+    }
+}
+
+/** form */
+.neon-form {
+    @apply grid gap-[18px];
+    .el-form-item {
+        @apply items-center mb-0;
+    }
+    &.el-form--inline {
+        .el-form-item {
+            @apply mr-[20px];
+        }
+    }
+    .el-cascader,
+    .el-input-number {
+        @apply w-full;
+    }
+    .el-input-number {
+        > span {
+            @apply h-[50%] opacity-0 transition-all duration-150;
+            &:hover {
+                @apply h-[60%];
+                + span {
+                    @apply h-[40%];
+                }
+            }
+        }
+        &:hover {
+            > span {
+                @apply opacity-100;
+            }
+        }
+    }
+    .el-input__inner[type="number"] {
+        @apply text-left;
+    }
+}
+
+/** cascader popper */
+.neon-cascader-popper {
+    .el-cascader-node__postfix {
+        @apply absolute
+    }
+    .el-cascader-node {
+        @apply px-[10px] rounded-md transition-all duration-150;
+    }
+    .el-cascader-menu__list {
+        @apply px-[6px];
+    }
+    .el-cascader-node__label {
+        @apply px-0;
+    }
+}
+
+/** autocomplete popper */
+.neon-autocomplete-popper {
+    .el-autocomplete-suggestion__wrap {
+        @apply p-[6px];
+        li {
+            @apply px-[10px] rounded-md transition-all duration-150;
+        }
+    }
+}
+
+/** select popper */
+.neon-select-popper {
+    .el-select-dropdown__list {
+        @apply px-[6px];
+    }
+    .el-select-dropdown__item {
+        @apply px-[10px] rounded-md transition-all duration-150;
+    }
+}
+
+/** tree popper */
+.neon-tree-popper {
+    .el-select-dropdown__list {
+        @apply px-[6px]; 
+    }
+    .el-tree-node__content {
+        @apply rounded-md;
+    }
+}
+
+/** 遮罩层 背景 */
+.el-loading-mask,
+.el-overlay {
+	@apply backdrop-blur-sm;
+}
+
+/** dialog */
+.neon-dialog {
+    .el-dialog__header {
+        @apply border-b py-[16px] px-[24px];
+    }
+    .el-dialog__body {
+        @apply p-[24px];
+    }
+    .el-dialog__footer {
+        @apply border-t py-[10px] px-[16px];
+    }
+}
+
+/** drawer */
+.neon-drawer {
+    .el-drawer__header {
+        @apply border-b border-[var(--ne-border)] py-[16px] px-[20px] mb-0;
+    }
+    .el-drawer__footer {
+         @apply border-t py-[10px] px-[16px];
+    }
+}
+
+/** pagination */
+.el-pagination {
+    @apply w-full;
+    .el-pagination__sizes {
+        @apply mr-auto;
+    }
+}
+
+/** 其他 */
+.el-select-dropdown__item {
+    @apply transition-[background] duration-300 ease;
+}

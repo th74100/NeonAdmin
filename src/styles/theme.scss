@@ -1,0 +1,60 @@
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+    $colors: (
+        'success': (
+            'base': #13CE66,
+        ),
+        'warning': (
+            'base': #E6A23C
+        ),
+        'danger': (
+            'base': #ff3860,
+        ),
+        'error': (
+            'base': #ff3860,
+        ),
+    ),
+    $menu: (
+        'base-level-padding': 6px,
+        'level-padding': 25px,
+        'item-height': 42px,
+        'sub-item-height': 42px,
+        'border-color': transparent,
+    ),
+    $main: (
+        'padding': 0,
+    ),
+    $table: (
+        'header-text-color': #606266,
+        'header-bg-color': #f5f7fa,
+    ),
+    $empty: (
+        'description-margin-top': 0px,
+    ),
+    $border-radius: (
+        'base': 6px,
+    ),
+    $pagination: (
+        'border-radius': 6px,
+    ),
+    $fill-color: (
+        'light': #f5f5f5,
+    ),
+    $button-padding-horizontal: (
+        'small': 10px,
+    ),
+    $date-editor: (
+        'width': 100%,
+        'monthrange-width': 100%,
+        'daterange-width': 100%,
+        'datetimerange-width': 100%,
+    ),
+    $dialog: (
+        'padding-primary': 0,
+    ),
+    $overlay-color: (
+		'lighter': rgba(0, 0, 0, 0.3)
+	),
+    $tree: (
+        'node-content-height': 30px,
+    )
+);
