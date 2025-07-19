@@ -79,17 +79,17 @@
 
 每个表单项的配置对象包含以下属性：
 
-| 属性   | 类型    | 描述                                                                                                                                                                                          |
-| ------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| label  | String  | 表单项的标签                                                                                                                                                                                  |
-| key    | String  | 表单项的唯一标识                                                                                                                                                                              |
-| type   | String  | 表单项的类型 'input', 'number', 'select', 'selectV2', 'radio', 'checkbox', 'date', 'time', 'timeSelect', 'autocomplete', 'cascader', 'inputTag', mention , 'rate', 'slider', 'switch', 'tree' |
-| style  | Object  | 表单项的样式                                                                                                                                                                                  |
-| rules  | Array   | 表单项的验证规则                                                                                                                                                                              |
-| help   | String  | 表单项的帮助信息                                                                                                                                                                              |
-| hidden | Boolean | 是否隐藏该表单项                                                                                                                                                                              |
-| props  | Object  | 传递给表单项组件的额外属性(见 Element Plus)                                                                                                                                                   |
-| slots  | Object  | 表单项的插槽配置(见 Element Plus)                                                                                                                                                             |
+| 属性   | 类型    | 描述                                                                                                                                                                                                                 |
+| ------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| label  | String  | 表单项的标签                                                                                                                                                                                                         |
+| key    | String  | 表单项的唯一标识（字段名）                                                                                                                                                                                           |
+| type   | String  | 表单项的类型, 默认 'input', 可选值: 'input', 'number', 'select', 'selectV2', 'radio', 'checkbox', 'date', 'time', 'timeSelect', 'autocomplete', 'cascader', 'inputTag', mention , 'rate', 'slider', 'switch', 'tree' |
+| style  | Object  | 表单项的样式                                                                                                                                                                                                         |
+| rules  | Array   | 表单项的验证规则                                                                                                                                                                                                     |
+| help   | String  | 表单项的帮助提示信息                                                                                                                                                                                                 |
+| hidden | Boolean | 是否隐藏该表单项                                                                                                                                                                                                     |
+| props  | Object  | 传递给表单项组件的额外属性(见 Element Plus)                                                                                                                                                                          |
+| slots  | Object  | 表单项的插槽配置(见 Element Plus)                                                                                                                                                                                    |
 
 ## 事件
 
@@ -108,6 +108,7 @@
 | resetFields    | 对该表单项进行重置，将其值重置为初始值并移除校验结果 | Function |
 | clearValidate  | 移除该表单项的校验结果                               | Function |
 | setState       | 设置表单组件的状态                                   | Object   |
+| getValues      | 获取表单数据                                         | Object   |
 
 ## 使用示例
 
