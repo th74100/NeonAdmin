@@ -13,6 +13,7 @@
     --ne-header: #fff;
     --ne-card: #fff;
     --ne-accent: #F4F4F5;
+    --ne-scrollbar: #e3e3e4;
 } 
 
 ::view-transition-new(root),::view-transition-old(root) {
@@ -29,7 +30,7 @@
 }
 
 ::-webkit-scrollbar {
-    @apply w-[6px] h-[6px];
+    @apply w-[8px] h-[8px];
 }
 
 ::-webkit-scrollbar-thumb {
@@ -377,11 +378,25 @@ body {
 
 /** dialog */
 .neon-dialog {
-    .el-dialog__header {
-        @apply border-b py-[16px] px-[24px];
+    .el-dialog {
+        @apply fx-col duration-300;
     }
     .el-dialog__body {
-        @apply p-[24px];
+        @apply flex-1;
+    }
+    &.auto-height {
+        .el-dialog {
+            @apply max-h-[80%];
+        }
+        .el-dialog__body {
+            @apply relative mr-1 my-1 py-2 min-h-40 overflow-y-auto;
+        }
+    }
+    .el-dialog__header {
+        @apply border-b py-[16px] px-4;
+    }
+    .el-dialog__body {
+        @apply p-3;
     }
     .el-dialog__footer {
         @apply border-t py-[10px] px-[16px];
