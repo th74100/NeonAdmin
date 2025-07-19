@@ -1,3 +1,6 @@
+/** meta title */
+export const META_TITLE = 'Vue3 NeonAdmin'
+
 /** 登录地址 */
 export const LOGIN_PATH = '/login'
 
