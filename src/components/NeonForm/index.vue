@@ -311,9 +311,18 @@ const _buttons = computed(() => {
 const rootProps = ['label', 'key', 'type', 'style', 'rules', 'help']
 const getProps = (item) => {
     if (item.props) {
-        return item.props
+        return Object.assign(item.props, {
+            clearable: true,
+            filterable: true,
+        })
     }
-    return tool.omit(item, rootProps)
+    return tool.omit(
+        Object.assign(item, {
+            clearable: true,
+            filterable: true,
+        }),
+        rootProps,
+    )
 }
 
 /** 组件 */
@@ -395,6 +404,11 @@ const setState = (opts) => {
     Object.assign(commonConfig, opts)
 }
 
+/** 获取formData */
+const getValues = () => {
+    return _formData.value
+}
+
 /** 取消 */
 const onCancel = () => {
     emit('cancel')
@@ -415,5 +429,6 @@ defineExpose({
         formInstance.value?.clearValidate()
     },
     setState,
+    getValues,
 })
 </script>
