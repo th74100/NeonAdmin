@@ -20,18 +20,16 @@
                             class="neon-tabs__background absolute z-[1] wh-full px-[6px] transition-opacity duration-150">
                             <div
                                 class="neon-tabs__background-content h-full rounded-tl-md rounded-tr-md duration-150" />
-                            <svg
-                                class="neon-tabs__background-before absolute bottom-0 left-[-1px] fill-transparent transition-all duration-150"
+                            <svg-icon
+                                name="ne-corner-before"
+                                width="7"
                                 height="7"
-                                width="7">
-                                <path d="M 0 7 A 7 7 0 0 0 7 0 L 7 7 Z"></path>
-                            </svg>
-                            <svg
-                                class="neon-tabs__background-after absolute bottom-0 right-[-1px] fill-transparent transition-all duration-150"
+                                class="neon-tabs__background-before absolute bottom-0 left-[-1px] fill-transparent transition-all duration-150" />
+                            <svg-icon
+                                name="ne-corner-after"
+                                width="7"
                                 height="7"
-                                width="7">
-                                <path d="M 0 0 A 7 7 0 0 0 7 7 L 0 7 Z"></path>
-                            </svg>
+                                class="neon-tabs__background-after absolute bottom-0 right-[-1px] fill-transparent transition-all duration-150" />
                         </div>
                         <div
                             v-if="visitedViews.length > 1"
