@@ -13,104 +13,145 @@
                     </a>
                 </template>
             </el-alert>
-            <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+            <el-scrollbar>
                 <div
-                    class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">基本使用</h2>
-                    <p class="px-4 py-6">一个基础的弹窗示例</p>
-                    <div class="border-t border-default px-4 py-3 text-center">
-                        <el-button
-                            type="primary"
-                            @click="open1">
-                            打开弹窗
-                        </el-button>
+                    class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <div
+                        class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
+                        <h2 class="border-b border-default p-4">基本使用</h2>
+                        <p class="px-4 py-6">一个基础的弹窗示例</p>
+                        <div
+                            class="border-t border-default px-4 py-3 text-center">
+                            <el-button
+                                type="primary"
+                                @click="open1">
+                                打开弹窗
+                            </el-button>
+                        </div>
+                    </div>
+                    <div
+                        class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
+                        <h2 class="border-b border-default p-4">可拖拽示例</h2>
+                        <p class="px-4 py-6">配置 draggable 可开启拖拽功能</p>
+                        <div
+                            class="border-t border-default px-4 py-3 text-center">
+                            <el-button
+                                type="primary"
+                                @click="open2">
+                                打开弹窗
+                            </el-button>
+                        </div>
+                    </div>
+                    <div
+                        class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
+                        <h2 class="border-b border-default p-4">
+                            自定义标题示例
+                        </h2>
+                        <p class="px-4 py-6">配置 title 可自定义标题</p>
+                        <div
+                            class="border-t border-default px-4 py-3 text-center">
+                            <el-button
+                                type="primary"
+                                @click="open3">
+                                打开弹窗
+                            </el-button>
+                        </div>
+                    </div>
+                    <div
+                        class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
+                        <h2 class="border-b border-default p-4">
+                            自定义弹窗宽度
+                        </h2>
+                        <p class="px-4 py-6">配置 width 可自定义宽度</p>
+                        <div
+                            class="border-t border-default px-4 py-3 text-center">
+                            <el-button
+                                type="primary"
+                                @click="open4">
+                                打开弹窗
+                            </el-button>
+                        </div>
+                    </div>
+                    <div
+                        class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
+                        <h2 class="border-b border-default p-4">
+                            表单弹窗示例
+                        </h2>
+                        <p class="px-4 py-6">弹窗与表单结合</p>
+                        <div
+                            class="border-t border-default px-4 py-3 text-center">
+                            <el-button
+                                type="primary"
+                                @click="open5">
+                                打开表单弹窗
+                            </el-button>
+                        </div>
+                    </div>
+                    <div
+                        class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
+                        <h2 class="border-b border-default p-4">
+                            嵌套弹窗示例
+                        </h2>
+                        <p class="px-4 py-6">在已经打开的弹窗中再次打开弹窗</p>
+                        <div
+                            class="border-t border-default px-4 py-3 text-center">
+                            <el-button
+                                type="primary"
+                                @click="open6">
+                                打开嵌套弹窗
+                            </el-button>
+                        </div>
+                    </div>
+                    <div
+                        class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
+                        <h2 class="border-b border-default p-4">
+                            自动计算高度
+                        </h2>
+                        <p class="px-4 py-6">可根据内容并自动调整高度</p>
+                        <div
+                            class="border-t border-default px-4 py-3 text-center">
+                            <el-button
+                                type="primary"
+                                @click="open7">
+                                打开弹窗
+                            </el-button>
+                        </div>
+                    </div>
+                    <div
+                        class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
+                        <h2 class="border-b border-default p-4">
+                            动态配置示例
+                        </h2>
+                        <p class="px-4 py-6">通过 setState 动态调整弹窗数据</p>
+                        <div
+                            class="border-t border-default px-4 py-3 text-center">
+                            <el-button
+                                type="primary"
+                                @click="open8">
+                                打开弹窗
+                            </el-button>
+                        </div>
+                    </div>
+
+                    <div
+                        class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
+                        <h2 class="border-b border-default p-4">
+                            slots插槽自定义头部和按钮操作区域
+                        </h2>
+                        <p class="px-4 py-6">
+                            通过 slots 插槽，自定义头部和按钮操作区
+                        </p>
+                        <div
+                            class="border-t border-default px-4 py-3 text-center">
+                            <el-button
+                                type="primary"
+                                @click="open9">
+                                打开弹窗
+                            </el-button>
+                        </div>
                     </div>
                 </div>
-                <div
-                    class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">可拖拽示例</h2>
-                    <p class="px-4 py-6">配置 draggable 可开启拖拽功能</p>
-                    <div class="border-t border-default px-4 py-3 text-center">
-                        <el-button
-                            type="primary"
-                            @click="open2">
-                            打开弹窗
-                        </el-button>
-                    </div>
-                </div>
-                <div
-                    class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">自定义标题示例</h2>
-                    <p class="px-4 py-6">配置 title 可自定义标题</p>
-                    <div class="border-t border-default px-4 py-3 text-center">
-                        <el-button
-                            type="primary"
-                            @click="open3">
-                            打开弹窗
-                        </el-button>
-                    </div>
-                </div>
-                <div
-                    class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">自定义弹窗宽度</h2>
-                    <p class="px-4 py-6">配置 width 可自定义宽度</p>
-                    <div class="border-t border-default px-4 py-3 text-center">
-                        <el-button
-                            type="primary"
-                            @click="open4">
-                            打开弹窗
-                        </el-button>
-                    </div>
-                </div>
-                <div
-                    class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">表单弹窗示例</h2>
-                    <p class="px-4 py-6">弹窗与表单结合</p>
-                    <div class="border-t border-default px-4 py-3 text-center">
-                        <el-button
-                            type="primary"
-                            @click="open5">
-                            打开表单弹窗
-                        </el-button>
-                    </div>
-                </div>
-                <div
-                    class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">嵌套弹窗示例</h2>
-                    <p class="px-4 py-6">在已经打开的弹窗中再次打开弹窗</p>
-                    <div class="border-t border-default px-4 py-3 text-center">
-                        <el-button
-                            type="primary"
-                            @click="open6">
-                            打开嵌套弹窗
-                        </el-button>
-                    </div>
-                </div>
-                <div
-                    class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">自动计算高度</h2>
-                    <p class="px-4 py-6">可根据内容并自动调整高度</p>
-                    <div class="border-t border-default px-4 py-3 text-center">
-                        <el-button
-                            type="primary"
-                            @click="open7">
-                            打开弹窗
-                        </el-button>
-                    </div>
-                </div>
-                <div
-                    class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">动态配置示例</h2>
-                    <p class="px-4 py-6">通过 setState 动态调整弹窗数据</p>
-                    <div class="border-t border-default px-4 py-3 text-center">
-                        <el-button
-                            type="primary"
-                            @click="open8">
-                            打开弹窗
-                        </el-button>
-                    </div>
-                </div>
-            </div>
+            </el-scrollbar>
         </template>
     </neon-container>
 </template>
@@ -138,80 +179,85 @@ const open4 = () =>
         width: '400px',
     })
 
-const open5 = () => {
-    const [BaseForm, formApi] = useNeonForm({
-        schema: [
-            {
-                label: '字段1',
-                key: 'field1',
-                rules: [
-                    {
-                        required: true,
-                        message: '请输入字段1',
-                        trigger: ['blur', 'change'],
-                    },
-                ],
-                placeholder: '请输入字段1',
-            },
-            {
-                label: '字段2',
-                key: 'field2',
-                rules: [
-                    {
-                        required: true,
-                        message: '请输入字段2',
-                        trigger: ['blur', 'change'],
-                    },
-                ],
-                placeholder: '请输入字段1',
-            },
-            {
-                label: '字段3',
-                key: 'field3',
-                type: 'select',
-                rules: [
-                    {
-                        required: true,
-                        message: '请选择字段3',
-                        trigger: ['blur', 'change'],
-                    },
-                ],
-                options: [
-                    {
-                        label: '选项1',
-                        value: '1',
-                    },
-                    {
-                        label: '选项2',
-                        value: '2',
-                    },
-                    {
-                        label: '选项3',
-                        value: '3',
-                    },
-                ],
-            },
-        ],
-        commonConfig: {
-            submitButtonOptions: {
-                show: false,
-            },
-            resetButtonOptions: {
-                show: false,
-            },
+const [BaseForm, formApi] = useNeonForm({
+    schema: [
+        {
+            label: '字段1',
+            key: 'field1',
+            rules: [
+                {
+                    required: true,
+                    message: '请输入字段1',
+                    trigger: ['blur', 'change'],
+                },
+            ],
+            placeholder: '请输入字段1',
         },
-    })
+        {
+            label: '字段2',
+            key: 'field2',
+            rules: [
+                {
+                    required: true,
+                    message: '请输入字段2',
+                    trigger: ['blur', 'change'],
+                },
+            ],
+            placeholder: '请输入字段1',
+        },
+        {
+            label: '字段3',
+            key: 'field3',
+            type: 'select',
+            rules: [
+                {
+                    required: true,
+                    message: '请选择字段3',
+                    trigger: ['blur', 'change'],
+                },
+            ],
+            options: [
+                {
+                    label: '选项1',
+                    value: '1',
+                },
+                {
+                    label: '选项2',
+                    value: '2',
+                },
+                {
+                    label: '选项3',
+                    value: '3',
+                },
+            ],
+        },
+    ],
+    commonConfig: {
+        submitButtonOptions: {
+            show: false,
+        },
+        resetButtonOptions: {
+            show: false,
+        },
+    },
+})
+const open5 = () => {
     renderDialog(BaseForm, {
         onConfirm: async () => {
             await formApi.validate()
 
-            const formData = formApi.getValues()
-            console.log(formData)
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const formData = formApi.getValues()
+                    console.log(formData)
+                    resolve()
+                }, 2000)
+            })
         },
     })
 }
 
-const open6 = () => {
+const open6 = () =>
     renderDialog(
         h('div', { class: 'flex items-center gap-5' }, [
             h('p', '嵌套弹窗示例'),
@@ -230,9 +276,8 @@ const open6 = () => {
             ),
         ]),
     )
-}
 
-const open7 = () => {
+const open7 = () =>
     renderDialog(
         h('div', { class: 'h-full' }, [
             h(
@@ -262,7 +307,6 @@ const open7 = () => {
             autoHeight: true,
         },
     )
-}
 
 const isFullscreen = ref(false)
 const open8 = () => {
@@ -301,5 +345,14 @@ const open8 = () => {
             title: '外部动态标题',
         },
     )
+}
+
+const open9 = () => {
+    renderDialog(h('p', '自定义头部和底部'), {
+        slots: {
+            header: () => h('p', '自定义头部'),
+            footer: () => h('p', '自定义底部'),
+        },
+    })
 }
 </script>
