@@ -95,10 +95,7 @@ const [BaseForm, formApi] = useNeonForm({
     schema,
     commonConfig: {
         size: 'large',
-        actionWrapperClass: 'w-full',
-        submitButtonOptions: {
-            class: 'w-full mt-[15px]',
-        },
+        actionWrapperClass: 'w-full mt-[15px]',
         resetButtonOptions: {
             show: false,
         },
