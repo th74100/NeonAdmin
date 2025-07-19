@@ -6,6 +6,9 @@ import autoprefixer from 'autoprefixer'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import { createHtmlPlugin } from 'vite-plugin-html'
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons-ng'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -15,7 +18,21 @@ export default defineConfig(({ mode }) => {
         plugins: [
             vue(),
             UnoCSS(),
-
+            ViteImageOptimizer(),
+            createSvgIconsPlugin({
+                // eslint-disable-next-line
+                iconDirs: [path.resolve(process.cwd(), 'src/icons')],
+                symbolId: 'icon-[dir]-[name]',
+            }),
+            createHtmlPlugin({
+                minify: true,
+                entry: 'src/main.js',
+                inject: {
+                    data: {
+                        title: 'Vue3 NeonAdmin',
+                    },
+                },
+            }),
             AutoImport({
                 imports: ['vue', '@vueuse/core'],
                 resolvers: [
