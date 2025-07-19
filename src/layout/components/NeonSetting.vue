@@ -69,17 +69,7 @@
                                 class="absolute inset-0 opacity-0 cursor-pointer">
                                 <el-color-picker
                                     v-model="colorValue"
-                                    :predefine="[
-                                        '#ff4500',
-                                        '#ff8c00',
-                                        '#ffd700',
-                                        '#90ee90',
-                                        '#00ced1',
-                                        '#1e90ff',
-                                        '#c71585',
-                                        '#FF4500',
-                                        '#409eff',
-                                    ]" />
+                                    :predefine="predefineColors" />
                             </div>
                         </div>
                     </div>
@@ -143,6 +133,17 @@ const globalStore = useGlobalStore()
 const colors = computed(() => globalStore.predefineColors)
 
 const colorValue = ref(globalStore.colorPrimary)
+const predefineColors = [
+    '#ff4500',
+    '#ff8c00',
+    '#ffd700',
+    '#90ee90',
+    '#00ced1',
+    '#1e90ff',
+    '#c71585',
+    '#FF4500',
+    '#409eff',
+]
 const isCustomActive = computed(() => {
     return colors.value.every((item) => item.color !== colorValue.value)
 })
