@@ -33,6 +33,9 @@ export const useNeonForm = (props) => {
         setState(opts) {
             formRef.value?.setState(opts)
         },
+        getValues() {
+            return formRef.value?.getValues()
+        },
     }
 
     return [Component, componentApi]
