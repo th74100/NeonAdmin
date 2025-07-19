@@ -4,6 +4,7 @@ import {
     APP_ENCRYPTION,
     APP_ENCRYPTION_KEY,
     APP_COLOR,
+    META_TITLE,
 } from '@/config'
 
 export const tool = {
@@ -276,5 +277,17 @@ export const tool = {
     initTheme(store) {
         const appColor = tool.local.get('GLOBAL', 'colorPrimary') || APP_COLOR
         store.theme(appColor)
+    },
+
+    /**
+     * meta title
+     */
+    setTitle(title) {
+        if (title) {
+            document.title = `${title} - ${META_TITLE}`
+        } else {
+            console.log('title is null')
+            document.title = META_TITLE
+        }
     },
 }

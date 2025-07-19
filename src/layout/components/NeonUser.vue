@@ -248,6 +248,7 @@ const loginOut = () => {
         onConfirm: () => {
             tool.local.remove('USER')
             userStore.clearToken()
+            tool.setTitle('登录')
             router.replace(LOGIN_PATH)
         },
     })
@@ -260,6 +261,7 @@ const clearLocal = () => {
             onConfirm: () => {
                 tool.local.clear()
                 userStore.clearToken()
+                tool.setTitle('登录')
                 router.replace(LOGIN_PATH)
             },
         },

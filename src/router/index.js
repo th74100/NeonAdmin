@@ -4,11 +4,12 @@ import {
     createWebHistory,
 } from 'vue-router'
 import NProgress from 'nprogress'
+import { tool } from '@/utils'
 import { staticRouter, errorRouter } from './modules/staticRouter'
 import { initDynamicRouter } from './modules/dynamicRouter'
 import useAuthStore from '@/stores/modules/auth'
 import useUserStore from '@/stores/modules/user'
-import { LOGIN_PATH, HOME_PATH, ROUTER_MODE } from '@/config'
+import { LOGIN_PATH, HOME_PATH, ROUTER_MODE, META_TITLE } from '@/config'
 
 const routes = [...staticRouter, ...errorRouter]
 
@@ -36,6 +37,7 @@ router.beforeEach(async (to, from, next) => {
         if (userStore.token) {
             return next(decodeURIComponent(to.query?.redirect || HOME_PATH))
         }
+        tool.setTitle(to.meta.title || META_TITLE)
         return next()
     }
 
@@ -57,7 +59,7 @@ router.beforeEach(async (to, from, next) => {
         return next({ ...to, replace: true })
     }
 
-    document.title = `${to.meta.title} - Vue NeonAdmin`
+    tool.setTitle(to.meta.title || META_TITLE)
 
     next()
 })
