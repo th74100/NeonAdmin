@@ -7,9 +7,9 @@
                 <template #title>
                     配置项参数，请查阅Element Plus文档：
                     <a
-                        href="https://element-plus.org/"
+                        href="https://element-plus.org/zh-CN/component/message.html"
                         target="_blank">
-                        https://element-plus.org/zh-CN/
+                        https://element-plus.org/zh-CN/component/message.html
                     </a>
                 </template>
             </el-alert>
@@ -105,6 +105,16 @@
                     </div>
                 </div>
 
+                <el-alert type="error">
+                    <template #title>
+                        配置项参数，请查阅Element Plus文档：
+                        <a
+                            href="https://element-plus.org/zh-CN/component/notification.html"
+                            target="_blank">
+                            https://element-plus.org/zh-CN/component/notification.html
+                        </a>
+                    </template>
+                </el-alert>
                 <div
                     class="border border-default rounded-md bg-[var(--ne-card)]">
                     <h2 class="border-b border-default p-4">
@@ -147,6 +157,16 @@
                     </div>
                 </div>
 
+                <el-alert type="error">
+                    <template #title>
+                        配置项参数，请查阅Element Plus文档：
+                        <a
+                            href="https://element-plus.org/zh-CN/component/message-box.html"
+                            target="_blank">
+                            https://element-plus.org/zh-CN/component/message-box.html
+                        </a>
+                    </template>
+                </el-alert>
                 <div
                     class="border border-default rounded-md bg-[var(--ne-card)]">
                     <h2 class="border-b border-default p-4">
@@ -188,14 +208,6 @@
                             ">
                             确 认 消 息
                         </el-button>
-                    </div>
-                </div>
-
-                <div
-                    class="border border-default rounded-md bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">弹窗</h2>
-                    <div class="px-4 py-5">
-                        <el-button type="primary">打 开</el-button>
                     </div>
                 </div>
             </div>
