@@ -92,7 +92,6 @@ const schema = [
     {
         label: '用户名',
         key: 'username',
-        type: 'input',
         rules: [
             {
                 required: true,
