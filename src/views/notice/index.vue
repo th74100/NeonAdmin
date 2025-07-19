@@ -205,5 +205,4 @@
 
 <script setup>
 import { $message, $notification, $msgbox } from '@/utils'
-import renderDialog from '@/utils/renderDialog'
 </script>
