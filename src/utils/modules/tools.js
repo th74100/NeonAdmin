@@ -273,6 +273,7 @@ export const tool = {
 
     /**
      * 初始化主题
+     * @param {Object} store
      */
     initTheme(store) {
         const appColor = tool.local.get('GLOBAL', 'colorPrimary') || APP_COLOR
@@ -281,6 +282,8 @@ export const tool = {
 
     /**
      * meta title
+     * @type {String}
+     *
      */
     setTitle(title) {
         if (title) {
@@ -289,5 +292,16 @@ export const tool = {
             console.log('title is null')
             document.title = META_TITLE
         }
+    },
+
+    /**
+     * 是否是数字
+     * @param {*} value
+     * @returns {Boolean}
+     */
+    isNumber(value) {
+        if (typeof value !== 'number' && typeof value !== 'string') return false
+
+        return /^-?\d+(\.\d+)?$/.test(value)
     },
 }
