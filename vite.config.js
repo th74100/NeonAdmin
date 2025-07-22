@@ -15,6 +15,7 @@ export default defineConfig(({ mode }) => {
     // eslint-disable-next-line
     const env = loadEnv(mode, process.cwd())
     return {
+        base: '/',
         plugins: [
             vue(),
             UnoCSS(),
@@ -81,9 +82,9 @@ export default defineConfig(({ mode }) => {
             },
         },
         build: {
-            minify: 'terser',
             outDir: 'dist',
             sourcemap: false,
+            minify: 'terser',
             terserOptions: {
                 compress: {
                     drop_console: true,
