@@ -19,62 +19,58 @@
                     </a>
                 </template>
             </el-alert>
-            <el-scrollbar>
-                <div class="fx-col gap-5">
-                    <div
-                        class="border border-default rounded-md bg-[var(--ne-card)]">
-                        <h2 class="border-b border-default p-4">基本使用</h2>
-                        <div class="px-4 py-5">
-                            <el-button
-                                type="primary"
-                                @click="open1">
-                                右侧打开
-                            </el-button>
-                            <el-button
-                                type="primary"
-                                @click="open2">
-                                左侧打开
-                            </el-button>
-                            <el-button
-                                type="primary"
-                                @click="open3">
-                                底部打开
-                            </el-button>
-                            <el-button
-                                type="primary"
-                                @click="open4">
-                                顶部打开
-                            </el-button>
-                        </div>
-                    </div>
-                    <div
-                        class="border border-default rounded-md bg-[var(--ne-card)]">
-                        <h2 class="border-b border-default p-4">
-                            表单抽屉示例
-                        </h2>
-                        <div class="px-4 py-5">
-                            <el-button
-                                type="primary"
-                                @click="open5">
-                                打开抽屉并设置表单schema以及数据
-                            </el-button>
-                        </div>
-                    </div>
-                    <div
-                        class="border border-default rounded-md bg-[var(--ne-card)]">
-                        <h2 class="border-b border-default p-4">
-                            自定义头部和底部区域
-                        </h2>
-                        <div class="px-4 py-5">
-                            <el-button
-                                type="primary"
-                                @click="open6">
-                                打开抽屉
-                            </el-button>
-                        </div>
+            <div class="fx-col gap-5">
+                <div
+                    class="border border-default rounded-md bg-[var(--ne-card)]">
+                    <h2 class="border-b border-default p-4">基本使用</h2>
+                    <div class="px-4 py-5">
+                        <el-button
+                            type="primary"
+                            @click="open1">
+                            右侧打开
+                        </el-button>
+                        <el-button
+                            type="primary"
+                            @click="open2">
+                            左侧打开
+                        </el-button>
+                        <el-button
+                            type="primary"
+                            @click="open3">
+                            底部打开
+                        </el-button>
+                        <el-button
+                            type="primary"
+                            @click="open4">
+                            顶部打开
+                        </el-button>
                     </div>
                 </div>
-            </el-scrollbar>
+                <div
+                    class="border border-default rounded-md bg-[var(--ne-card)]">
+                    <h2 class="border-b border-default p-4">表单抽屉示例</h2>
+                    <div class="px-4 py-5">
+                        <el-button
+                            type="primary"
+                            @click="open5">
+                            打开抽屉并设置表单schema以及数据
+                        </el-button>
+                    </div>
+                </div>
+                <div
+                    class="border border-default rounded-md bg-[var(--ne-card)]">
+                    <h2 class="border-b border-default p-4">
+                        自定义头部和底部区域
+                    </h2>
+                    <div class="px-4 py-5">
+                        <el-button
+                            type="primary"
+                            @click="open6">
+                            打开抽屉
+                        </el-button>
+                    </div>
+                </div>
+            </div>
         </template>
     </neon-container>
 </template>

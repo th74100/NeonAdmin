@@ -6,15 +6,21 @@
                 class="py-[18px] px-[25px] border-b border-default bg-[var(--ne-card)]">
                 <slot name="header"></slot>
             </div>
-            <div class="flex-1 p-[15px] shadow-xs overflow-hidden">
+            <div
+                class="flex-1 shadow-xs overflow-hidden"
+                :class="{
+                    'p-[15px]': $slots.default,
+                }">
                 <div
                     v-if="$slots.default"
                     class="fx-col h-full p-[10px] border border-default rounded-md bg-[var(--ne-card)] overflow-hidden">
                     <slot></slot>
                 </div>
-                <slot
-                    v-else
-                    name="content"></slot>
+                <el-scrollbar v-else>
+                    <div class="p-[15px]">
+                        <slot name="content"></slot>
+                    </div>
+                </el-scrollbar>
             </div>
         </div>
         <div
