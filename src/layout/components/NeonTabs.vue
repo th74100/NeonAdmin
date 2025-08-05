@@ -5,66 +5,69 @@
             ref="tabBox"
             class="flex flex-1 pt-[3px] h-full overflow-hidden">
             <div
+                ref="tabList"
                 class="neon-tabs-content flex w-max h-full pr-6 overflow-hidden">
-                <div
-                    v-for="(item, index) in visitedViews"
-                    :key="item.path"
-                    :class="[
-                        { 'is-active': item.path === activeTab },
-                        { home: item.path === HOME_PATH },
-                    ]"
-                    @click="handleChangeTab(item.path)"
-                    class="neon-tabs__item shrink-0 relative -mr-3 flex items-center h-full select-none cursor-pointer">
-                    <div class="relative wh-full px-1">
-                        <div
-                            class="neon-tabs__background absolute z-[1] wh-full px-[6px] transition-opacity duration-150">
+                <transition-group name="fade-left">
+                    <div
+                        v-for="item in visitedViews"
+                        :key="item.path"
+                        :class="[
+                            { 'is-active': item.path === activeTab },
+                            { 'affix-tab': item.fixate },
+                        ]"
+                        @click="handleChangeTab(item.path)"
+                        @contextmenu.prevent="handleContextMenu($event, item)"
+                        class="neon-tabs__item draggable shrink-0 relative -mr-3 flex items-center h-full select-none cursor-pointer">
+                        <div class="relative wh-full px-1">
                             <div
-                                class="neon-tabs__background-content h-full rounded-tl-md rounded-tr-md duration-150" />
-                            <svg-icon
-                                name="ne-corner-before"
-                                width="7"
-                                height="7"
-                                class="neon-tabs__background-before absolute bottom-0 left-[-1px] fill-transparent transition-all duration-150" />
-                            <svg-icon
-                                name="ne-corner-after"
-                                width="7"
-                                height="7"
-                                class="neon-tabs__background-after absolute bottom-0 right-[-1px] fill-transparent transition-all duration-150" />
-                        </div>
-                        <div
-                            v-if="visitedViews.length > 1"
-                            class="absolute right-[10px] top-1/2 z-[3] size-4 translate-y-[-50%]">
-                            <neon-fixed
-                                v-if="
-                                    (item.path === HOME_PATH || index == 0) &&
-                                    isFixed
-                                "
-                                class="mt-[2px] size-3.2 cursor-pointer rounded-full transition-all"
-                                @click.stop="isFixed = false" />
-                            <neon-close
-                                v-else
-                                @click.stop="removeTab(item.path)"
-                                class="neon-tabs__close mt-[2px] size-3 cursor-pointer rounded-full transition-all" />
-                        </div>
-                        <div
-                            class="neon-tabs__name"
-                            :class="{ 'pr-4': visitedViews.length > 1 }">
-                            <el-icon
-                                v-if="item.meta?.icon"
-                                :size="15">
-                                <component :is="item.meta.icon" />
-                            </el-icon>
-                            <el-icon
-                                v-else
-                                :size="15">
-                                <neon-activity />
-                            </el-icon>
-                            <span class="text-nowrap">
-                                {{ item.meta?.title }}
-                            </span>
+                                class="neon-tabs__background absolute z-[1] wh-full px-[6px] transition-opacity duration-150">
+                                <div
+                                    class="neon-tabs__background-content h-full rounded-tl-md rounded-tr-md duration-150" />
+                                <NeonSvg
+                                    name="ne-corner-before"
+                                    width="7"
+                                    height="7"
+                                    class="neon-tabs__background-before absolute bottom-0 left-[-1px] fill-transparent transition-all duration-150" />
+                                <NeonSvg
+                                    name="ne-corner-after"
+                                    width="7"
+                                    height="7"
+                                    class="neon-tabs__background-after absolute bottom-0 right-[-1px] fill-transparent transition-all duration-150" />
+                            </div>
+                            <div
+                                v-if="visitedViews.length > 1"
+                                class="absolute right-[10px] top-1/2 z-[3] size-4 translate-y-[-50%]">
+                                <neon-fixed
+                                    v-if="item.fixate"
+                                    class="mt-[2px] size-3.2 cursor-pointer rounded-full transition-all"
+                                    @click.stop="item.fixate = false" />
+                                <neon-close
+                                    v-else
+                                    @click.stop="removeTab(item.path)"
+                                    class="neon-tabs__close mt-[2px] size-3 cursor-pointer rounded-full transition-all" />
+                            </div>
+                            <div
+                                class="neon-tabs__name"
+                                :class="{
+                                    'pr-4': visitedViews.length > 1,
+                                }">
+                                <el-icon
+                                    v-if="item.meta?.icon"
+                                    :size="15">
+                                    <component :is="item.meta.icon" />
+                                </el-icon>
+                                <el-icon
+                                    v-else
+                                    :size="15">
+                                    <neon-activity />
+                                </el-icon>
+                                <span class="text-nowrap">
+                                    {{ item.meta?.title }}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </transition-group>
             </div>
         </div>
         <div
@@ -118,6 +121,87 @@
             </div>
         </div>
     </div>
+
+    <!--右键菜单-->
+    <transition name="fade-left">
+        <div
+            v-if="chooseItem"
+            class="context-menu group">
+            <div
+                class="context-menu__item"
+                :data-disabled="isDisabled(chooseItem, 'close')"
+                @click="handleCloseCurrentTab(chooseItem.path)">
+                <el-icon>
+                    <Close />
+                </el-icon>
+                <span>关闭</span>
+            </div>
+            <div
+                class="context-menu__item"
+                :data-disabled="visitedViews.length <= 1"
+                @click="chooseItem.fixate = !chooseItem.fixate">
+                <el-icon>
+                    <NeonPushpin />
+                </el-icon>
+                <span>{{ chooseItem.fixate ? '取消固定' : '固定' }}</span>
+            </div>
+            <div
+                class="context-menu__item"
+                :data-disabled="isDisabled(chooseItem, 'reload')"
+                @click="reload">
+                <el-icon>
+                    <Refresh />
+                </el-icon>
+                <span>重新加载</span>
+            </div>
+            <div
+                class="context-menu__item"
+                @click="handleOpenTab(chooseItem.path)">
+                <el-icon>
+                    <NeonTarget />
+                </el-icon>
+                <span>在新窗口打开</span>
+            </div>
+            <div class="border-t border-default my-1"></div>
+            <div
+                class="context-menu__item"
+                :data-disabled="isDisabled(chooseItem, 'left')"
+                @click="handleCloseTab(chooseItem.path, 'left')">
+                <el-icon>
+                    <NeonLeft />
+                </el-icon>
+                <span>关闭左侧标签页</span>
+            </div>
+            <div
+                class="context-menu__item"
+                :data-disabled="isDisabled(chooseItem, 'right')"
+                @click="handleCloseTab(chooseItem.path, 'right')">
+                <el-icon>
+                    <NeonRight />
+                </el-icon>
+                <span>关闭右侧标签页</span>
+            </div>
+            <div class="border-t border-default my-1"></div>
+            <div
+                class="context-menu__item"
+                :data-disabled="isDisabled(chooseItem, 'closeOther')"
+                @click="handleCloseOtherTab">
+                <el-icon>
+                    <Remove />
+                </el-icon>
+                <span>关闭其他标签页</span>
+            </div>
+            <div
+                class="context-menu__item"
+                :data-disabled="isDisabled(chooseItem)"
+                @click="handleCloseTabAll">
+                <el-icon>
+                    <CircleClose />
+                </el-icon>
+                <span>关闭全部标签页</span>
+            </div>
+        </div>
+    </transition>
 </template>
 
 <script setup>
@@ -132,6 +216,7 @@ import {
 } from 'vue'
 import { useElementSize, useResizeObserver, useDebounceFn } from '@vueuse/core'
 import { useRouter, useRoute } from 'vue-router'
+import Sortable from 'sortablejs'
 import { flatTree, tool } from '@/utils'
 import useAuthStore from '@/stores/modules/auth'
 import useTabsStore from '@/stores/modules/tabs'
@@ -145,17 +230,28 @@ const tabsStore = useTabsStore()
 
 const isFixed = ref(true)
 const visibleLength = ref(0)
-const visitedViews = computed(() => tabsStore.getVisitedViews)
+const visitedViews = computed(() => {
+    const tabs = tabsStore.getVisitedViews
+
+    tabs.sort((a, b) => {
+        return !!b.fixate - !!a.fixate
+    })
+    return tabs
+})
 const affixTabs = computed(() => tabsStore.getAffixTabs)
 
-/** 计算tab列表 */
+/** tab */
 const tabBoxEl = useTemplateRef('tabBox')
+const tabListEl = useTemplateRef('tabList')
+
+/** 计算可以放下多少个tab */
 const getVisibleLength = () => {
     const { width } = useElementSize(tabBoxEl)
     const minWidth = 120
     visibleLength.value = Math.floor(width.value / minWidth)
 }
 
+/** 获取路由 */
 const getRoute = (route) => {
     const { name, meta, path } = route
     const omitMeta = tool.omit(meta, ['breadcrumb'])
@@ -163,6 +259,7 @@ const getRoute = (route) => {
         name,
         meta: { ...omitMeta },
         path,
+        fixate: path === HOME_PATH ? true : false,
         closeIcon: path === HOME_PATH ? false : true,
     }
     return routeItem
@@ -236,9 +333,7 @@ const removeTab = (path, affix = false) => {
     })
 }
 
-/**
- * * @description 监听路由
- */
+/** 监听路由 */
 watch(
     () => route.fullPath,
     async () => {
@@ -252,6 +347,163 @@ const debounceFn = useDebounceFn(() => {
     updateTab()
 }, 0)
 
+/** 右键菜单 */
+const chooseItem = ref(null)
+const handleContextMenu = async (e, item) => {
+    chooseItem.value = item
+
+    await nextTick()
+
+    const contextMenu = document.querySelector('.context-menu')
+
+    // 阻止默认右键菜单
+    e.preventDefault()
+
+    if (contextMenu != null) {
+        // 设置 card 的位置为鼠标点击位置
+        contextMenu.style.display = 'block'
+        contextMenu.style.left = e.pageX + 'px'
+        contextMenu.style.top = e.pageY + 'px'
+
+        const _hideContextMenu = () => {
+            if (contextMenu !== null) {
+                contextMenu.style.display = 'none'
+                chooseItem.value = null
+            }
+            window.removeEventListener('click', _hideContextMenu)
+        }
+
+        window.addEventListener('click', _hideContextMenu)
+    }
+
+    e.stopPropagation()
+}
+
+/** 右键菜单关闭左右标签页是否disabled状态 */
+const isDisabled = (item, type) => {
+    const { path, fixate } = item
+    const tabs = [...visitedViews.value, ...affixTabs.value]
+    const index = tabs.findIndex((item) => path === item.path)
+
+    // 判断当前当前标签页的上一级是否是固定标签页
+    const isLeftTabs = tabs[index - 1]?.fixate ?? false
+
+    // 判断当前当前标签页的下一级是否是固定标签页
+    const isRightTabs = tabs[index + 1]?.fixate ?? false
+
+    // 关闭
+    if (type === 'close') {
+        return fixate || visitedViews.value.length <= 1
+    }
+
+    // 重新加载
+    if (type === 'reload') {
+        return path !== route.path
+    }
+
+    // 关闭左侧标签页
+    if (type === 'left') {
+        if (index === 0) return true
+        return index > 0 && isLeftTabs
+    }
+
+    // 关闭右侧标签页
+    if (type === 'right') {
+        if (index === 0) return true
+        return index >= tabs.length - 1 || isRightTabs
+    }
+
+    // 关闭其他标签页
+    if (type === 'closeOther') {
+        if (tabs.length === 1) return true
+        return path !== route.path || isLeftTabs
+    }
+
+    // 关闭全部标签页
+    return tabs.length <= 1
+}
+
+/** 关闭单个标签 */
+const handleCloseCurrentTab = () => {
+    if (chooseItem.value) {
+        tabsStore.removeTab(chooseItem.value.path, true)
+        return
+    }
+    tabsStore.removeTab(route.path)
+}
+
+/** 在新窗口打开 */
+const handleOpenTab = (path) => window.open(path)
+
+/** 关闭左侧/右侧标签 */
+const handleCloseTab = async (path, direction) => {
+    tabsStore.closeSideTabs(path, direction)
+    await nextTick()
+    updateTab()
+}
+
+/** 关闭其他标签页 */
+const handleCloseOtherTab = () => {
+    if (chooseItem.value) {
+        tabsStore.closeManyTabs(chooseItem.value.path)
+        return
+    }
+
+    tabsStore.closeManyTabs(route.path)
+}
+
+/** 关闭全部标签页 */
+const handleCloseTabAll = () => {
+    tabsStore.closeManyTabs()
+    router.push(HOME_PATH)
+}
+
+const checkClass = (el) => {
+    const defaultEl = 'neon-tabs__item'
+    return el.classList.contains(defaultEl) ? el : el.closest(`.${defaultEl}`)
+}
+
+const createSortable = () =>
+    Sortable.create(tabListEl.value, {
+        animation: 350,
+        onMove: (evt) => {
+            const classItem = checkClass(evt.related)
+            if (
+                classItem != null &&
+                classItem.classList.contains('draggable')
+            ) {
+                const dragged = evt.dragged.classList.contains('affix-tab')
+                const related = evt.related.classList.contains('affix-tab')
+                return dragged === related
+            }
+            return false
+        },
+        onEnd: (evt) => {
+            const {
+                newIndex,
+                oldIndex,
+                originalEvent: { srcElement },
+            } = evt
+
+            if (!srcElement) {
+                return
+            }
+
+            const classItem = checkClass(srcElement)
+
+            if (!classItem) {
+                return
+            }
+
+            if (!classItem.classList.contains('draggable')) {
+                return
+            }
+
+            const moveTab = tabsStore.visitedViews.splice(oldIndex, 1)[0]
+            tabsStore.updateSortable(newIndex, moveTab)
+        },
+    })
+
 onMounted(() => {
     nextTick(() => {
         getVisibleLength()
@@ -260,6 +512,8 @@ onMounted(() => {
     })
 
     useResizeObserver(tabBoxEl, debounceFn)
+
+    nextTick(() => createSortable())
 })
 </script>
 
@@ -272,11 +526,11 @@ onMounted(() => {
         }
         &.is-active {
             .neon-tabs__background-content {
-                @apply bg-[var(--ne-primary-light-9)] dark:bg-[var(--ne-accent)];
+                @apply bg-[var(--ne-primary-light-9)];
             }
             .neon-tabs__background-before,
             .neon-tabs__background-after {
-                @apply fill-[var(--ne-primary-light-9)] dark:fill-[var(--ne-accent)];
+                @apply fill-[var(--ne-primary-light-9)];
             }
             .neon-tabs__name {
                 @apply text-[var(--ne-primary)] dark:text-[var(--ne-foreground)];
@@ -300,5 +554,12 @@ onMounted(() => {
 
 .neon-tabs__tool {
     @apply fx-center w-[35px] h-full border-l border-[var(--ne-border)] text-[var(--ne-foreground)] hover:text-gray-800 dark:hover:text-[var(--ne-foreground)] hover:bg-[var(--ne-accent)] transition-all cursor-pointer;
+}
+
+.context-menu {
+    @apply absolute z-10 py-1 text-sm text-[var(--neon-foreground)] dark:text-[var(--ne-muted-foreground)] rounded-md shadow-md border border-[var(--ne-border)] bg-white dark:bg-[var(--ne-card)] hidden;
+    .context-menu__item {
+        @apply fx-start gap-[5px] py-1 px-3 mx-1 leading-7 rounded-md data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 hover:bg-[var(--ne-accent)] transition-all cursor-pointer;
+    }
 }
 </style>
