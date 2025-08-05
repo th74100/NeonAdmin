@@ -14,11 +14,12 @@
         ),
     ),
     $menu: (
-        'base-level-padding': 6px,
+        'base-level-padding': 10px,
         'level-padding': 25px,
         'item-height': 42px,
         'sub-item-height': 42px,
         'border-color': transparent,
+        'icon-width': 25px,
     ),
     $main: (
         'padding': 0,
@@ -52,10 +53,16 @@
         'margin-top': 10vh,
         'padding-primary': 0,
     ),
+    $drawer: (
+        'padding-primary': 15px
+    ),
     $overlay-color: (
 		'lighter': rgba(0, 0, 0, 0.3)
 	),
     $tree: (
         'node-content-height': 30px,
+    ),
+    $messagebox: (
+        'content-font-size': 15px
     )
 );

@@ -17,6 +17,8 @@ const tabsStore = defineStore('tabs', {
             this.visitedViews = []
             this.affixTabs = []
         },
+
+        /** 添加标签页 */
         addTab(tab, maxTabs) {
             const index = this.visitedViews.findIndex(
                 (view) => view.path === tab.path,
@@ -59,9 +61,9 @@ const tabsStore = defineStore('tabs', {
                 }
             }
         },
-        removeTab(path, isCurrent, affix = false) {
-            //if (path === HOME_PATH) return
 
+        /** 移除标签页 */
+        removeTab(path, isCurrent, affix = false) {
             if (this.affixTabs.length > 0) {
                 if (!affix) {
                     const affixTab = this.affixTabs.shift()
@@ -88,14 +90,16 @@ const tabsStore = defineStore('tabs', {
                 }
             }
         },
-        // 只保留当前tab
+
+        /** 关闭所有，只保留当前tab */
         closeManyTabs(tabPath) {
             this.visitedViews = this.visitedViews.filter(
                 (item) => item.path === tabPath || !item.closeIcon,
             )
             this.affixTabs = []
         },
-        // 关闭左/右侧tab
+
+        /** 关闭左/右侧tab */
         closeSideTabs(path, direction) {
             const currentIndex = this.visitedViews.findIndex(
                 (item) => item.path === path,
@@ -128,6 +132,8 @@ const tabsStore = defineStore('tabs', {
                 }
             }
         },
+
+        /** 更新VisitedViews */
         updateVisitedViews(tab, maxTabs) {
             if (this.visitedViews.length < maxTabs) {
                 const affixTab = this.affixTabs.shift()
@@ -152,10 +158,9 @@ const tabsStore = defineStore('tabs', {
                 }
             }
         },
-        show(path, type) {
-            const tabs = [...this.visitedViews, ...this.affixTabs]
-            const index = tabs.findIndex((item) => path === item.path)
-            return type === 'left' ? index > 0 : index < tabs.length - 1
+
+        updateSortable(index, tab) {
+            this.visitedViews.splice(index, 0, tab)
         },
     },
     getters: {

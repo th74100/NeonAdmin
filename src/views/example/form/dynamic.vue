@@ -36,17 +36,14 @@ const [formState] = useRef({
 })
 
 const options = computed(() => {
-    if (formState.value.field2Value === '123') {
-        return [
-            { label: '选项1', value: '1' },
-            { label: '选项2', value: '2' },
-            { label: '选项3', value: '3' },
-        ]
-    }
-    return [
+    const defaultOptions = [
         { label: '选项1', value: '1' },
         { label: '选项2', value: '2' },
     ]
+    if (formState.value.field2Value === '123') {
+        return defaultOptions.concat({ label: '选项3', value: '3' })
+    }
+    return defaultOptions
 })
 
 const schema = computed(() => [
@@ -135,7 +132,7 @@ const schema = computed(() => [
 ])
 
 const [NeonFormBuilder, formApi] = useNeonForm({
-    values: formState,
+    modelValue: formState,
     schema,
     commonConfig: {
         wrapperClass: 'm-[15px] lg:grid-cols-2 xl:grid-cols-4',

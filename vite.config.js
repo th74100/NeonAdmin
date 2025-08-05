@@ -9,6 +9,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons-ng'
+import prismjs from 'vite-plugin-prismjs'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -50,6 +51,16 @@ export default defineConfig(({ mode }) => {
                 ],
                 directoryAsNamespace: true,
                 dts: true,
+            }),
+            prismjs({
+                languages: [
+                    'javascript',
+                    'html',
+                    'css',
+                    'json',
+                    'markdown',
+                    'typescript',
+                ],
             }),
         ],
         resolve: {
@@ -140,7 +151,18 @@ export default defineConfig(({ mode }) => {
                         vendor: ['vue', 'vue-router'],
                         pinia: ['pinia', 'pinia-plugin-persistedstate'],
                         element: ['element-plus'],
-                        libs: ['@element-plus/icons-vue'],
+                        icons: ['@element-plus/icons-vue'],
+                        wangeditor: ['@wangeditor/editor-for-vue'],
+                        mdeditor: ['@kangc/v-md-editor'],
+                        vueuse: ['@vueuse/core'],
+                        echarts: ['echarts', 'vue-echarts'],
+                        libs: [
+                            'axios',
+                            'crypto-js',
+                            'dayjs',
+                            'nprogress',
+                            'markdown-it',
+                        ],
                     },
                 },
             },

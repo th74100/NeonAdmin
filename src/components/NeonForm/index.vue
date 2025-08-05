@@ -1,7 +1,7 @@
 <template>
     <el-form
         ref="form"
-        :model="_formData"
+        :model="formData"
         v-bind="tool.omit(_options, ['wrapperClass'])"
         @submit.prevent="onSubmit(formInstance)"
         class="neon-form"
@@ -12,6 +12,7 @@
             <el-form-item
                 v-show="isCollapsed || index < collapseCount"
                 :label="item.label"
+                :labelWidth="item.labelWidth"
                 :prop="item.key"
                 :rules="item.rules"
                 :style="getStyle(item)">
@@ -31,16 +32,17 @@
                 </template>
                 <slot :name="item.key">
                     <component-item
-                        :modelValue="_formData"
+                        :modelValue="formData"
                         :item="item" />
                 </slot>
             </el-form-item>
         </template>
         <el-form-item
             v-if="
-                _buttons.submitButtonOptions.show ||
-                _buttons.resetButtonOptions.show ||
-                _buttons.cancelButtonOptions.show
+                (_buttons.submitButtonOptions.show ||
+                    _buttons.resetButtonOptions.show ||
+                    _buttons.cancelButtonOptions.show) &&
+                fieldItems.length
             "
             :class="_buttons.actionWrapperClass">
             <slot name="buttons">
@@ -129,13 +131,7 @@ import {
 
 const emit = defineEmits(['submit', 'reset', 'cancel'])
 
-const { values, schema, commonConfig, collapsed } = defineProps({
-    // 设置表单值
-    values: {
-        type: Object,
-        default: () => ({}),
-    },
-
+const { schema, commonConfig, collapsed } = defineProps({
     // 表单项配置
     schema: {
         type: Array,
@@ -231,11 +227,10 @@ const componentMaps = {
     }),
 }
 
+const slots = useSlots()
 const formInstance = useTemplateRef('form')
 const isCollapsed = ref(collapsed)
-const slots = useSlots()
-
-const _formData = ref({ ...values })
+const formData = defineModel()
 
 /** 展开/收起切换 */
 const toggleCollapsed = () => {
@@ -251,7 +246,7 @@ const _options = computed(() => {
     return Object.assign(
         config,
         tool.omit(commonConfig, [
-            'actionWrapperClass',
+            'buttonAlign',
             'submitButtonOptions',
             'resetButtonOptions',
             'cancelButtonOptions',
@@ -260,9 +255,14 @@ const _options = computed(() => {
 })
 
 /** 按钮配置 */
+const alignMap = {
+    start: 'mr-auto',
+    center: 'mx-auto',
+    right: 'col-start--2 ml-auto',
+}
 const _buttons = computed(() => {
     const config = {
-        actionWrapperClass: 'col-start--2 ml-auto',
+        actionWrapperClass: '',
         submitButtonOptions: {
             type: 'primary',
             text: '提交',
@@ -283,15 +283,19 @@ const _buttons = computed(() => {
             disabled: false,
         },
     }
+
     const {
-        actionWrapperClass = '',
+        buttonAlign = 'right',
+        actionWrapperClass,
         submitButtonOptions = {},
         resetButtonOptions = {},
         cancelButtonOptions = {},
     } = commonConfig
 
+    const itemActionWrapperClass = actionWrapperClass ?? alignMap[buttonAlign]
+
     return Object.assign(config, {
-        actionWrapperClass: actionWrapperClass || config.actionWrapperClass,
+        actionWrapperClass: itemActionWrapperClass,
         submitButtonOptions: Object.assign(
             config.submitButtonOptions,
             submitButtonOptions,
@@ -308,21 +312,25 @@ const _buttons = computed(() => {
 })
 
 /** props */
-const rootProps = ['label', 'key', 'type', 'style', 'rules', 'help']
+const rootProps = [
+    'label',
+    'key',
+    'type',
+    'style',
+    'rules',
+    'help',
+    'wrapperClass',
+]
 const getProps = (item) => {
-    if (item.props) {
-        return Object.assign(item.props, {
-            clearable: true,
-            filterable: true,
-        })
+    const _props = {
+        clearable: true,
+        filterable: true,
     }
-    return tool.omit(
-        Object.assign(item, {
-            clearable: true,
-            filterable: true,
-        }),
-        rootProps,
-    )
+
+    if (item.props) {
+        return Object.assign(item.props, _props)
+    }
+    return tool.omit(Object.assign(item, _props), rootProps)
 }
 
 /** 组件 */
@@ -352,7 +360,7 @@ const ComponentItem = {
     setup(props, { slots }) {
         return () => {
             // 动态收集插槽
-            const { item } = props
+            const { item, modelValue } = props
             const _slots = Object.fromEntries(
                 Object.entries(item.slots || {}).map(([key, value]) => [
                     key,
@@ -366,9 +374,9 @@ const ComponentItem = {
                 getComponent(item),
                 {
                     ...getProps(item),
-                    modelValue: _formData.value[item.key],
+                    modelValue: modelValue[item.key],
                     'onUpdate:modelValue': (val) => {
-                        _formData.value[item.key] = val
+                        modelValue[item.key] = val
                     },
                 },
                 _slots,
@@ -388,7 +396,7 @@ const onSubmit = async (formEl) => {
     if (!formEl) return
     await formEl.validate((valid) => {
         if (!valid) return scrollIntoError()
-        emit('submit', _formData.value)
+        emit('submit', formData.value)
     })
 }
 
@@ -396,7 +404,12 @@ const onSubmit = async (formEl) => {
 const onReset = (formEl) => {
     if (!formEl) return
     formEl?.resetFields()
-    emit('reset', _formData.value)
+    emit('reset', formData.value)
+}
+
+/** 取消 */
+const onCancel = () => {
+    emit('cancel')
 }
 
 /** 设置表单组件的状态 props */
@@ -406,12 +419,7 @@ const setState = (opts) => {
 
 /** 获取formData */
 const getValues = () => {
-    return _formData.value
-}
-
-/** 取消 */
-const onCancel = () => {
-    emit('cancel')
+    return formData.value
 }
 
 /** 暴露出去 */

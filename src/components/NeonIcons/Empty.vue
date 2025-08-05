@@ -18,7 +18,7 @@
             <g
                 class="ant-empty-img-simple-g"
                 fill-rule="nonzero"
-                stroke="#000">
+                stroke="#333">
                 <path
                     d="M55 12.76L44.854 1.258C44.367.474 43.656 0 42.907 0H21.093c-.749 0-1.46.474-1.947 1.257L9 12.761V22h46v-9.24z"></path>
                 <path

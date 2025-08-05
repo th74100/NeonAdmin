@@ -29,7 +29,7 @@
             class="fx-between gap-[5px] py-1 px-2 mx-1 leading-7 text-sm rounded-md hover:bg-[var(--ne-accent)] transition-all">
             <span>深色侧边栏</span>
             <el-switch
-                v-model="darkSlide"
+                :model-value="globalStore.darkSlide"
                 @change="handleChangeSlide" />
         </div>
     </div>
@@ -81,41 +81,75 @@
     <div class="fx-col py-3">
         <h3 class="mb-3 font-semibold tracking-tight">动画</h3>
         <div
-            class="fx-between gap-[5px] py-1 px-2 mx-1 leading-7 text-sm rounded-md hover:bg-[var(--ne-accent)] transition-all">
+            class="fx-between gap-[5px] py-1 px-2 leading-7 text-sm rounded-md hover:bg-[var(--ne-accent)] transition-all">
             <span>页面切换动画</span>
-            <el-select
-                v-model="transition"
-                @change="handleChangeTransition"
-                style="width: 150px">
-                <el-option
-                    label="淡出滑动"
-                    value="fade-slide" />
-                <el-option
-                    label="淡入淡出"
-                    value="fade" />
-                <el-option
-                    label="向下淡出"
-                    value="fade-down" />
-                <el-option
-                    label="淡出缩放"
-                    value="fade-scale" />
-            </el-select>
+            <el-switch
+                :model-value="globalStore.routerAnimation"
+                @change="handleChangeAnimation" />
+        </div>
+        <div
+            v-if="globalStore.routerAnimation"
+            class="mb-2 mt-3 fx-between gap-3 px-2">
+            <div
+                class="p-2 border-2 rounded-md cursor-pointer"
+                :class="
+                    globalStore.transition === 'fade-slide'
+                        ? 'border-primary'
+                        : 'border-default'
+                "
+                @click="handleChangeTransition('fade-slide')">
+                <div
+                    class="fade-slide-slow h-10 w-12 rounded-md bg-[var(--ne-accent)]" />
+            </div>
+            <div
+                class="p-2 border-2 rounded-md cursor-pointer"
+                :class="
+                    globalStore.transition === 'fade'
+                        ? 'border-primary'
+                        : 'border-default'
+                "
+                @click="handleChangeTransition('fade')">
+                <div
+                    class="fade-slow h-10 w-12 rounded-md bg-[var(--ne-accent)]" />
+            </div>
+            <div
+                class="p-2 border-2 rounded-md cursor-pointer"
+                :class="
+                    globalStore.transition === 'fade-down'
+                        ? 'border-primary'
+                        : 'border-default'
+                "
+                @click="handleChangeTransition('fade-down')">
+                <div
+                    class="fade-down-slow h-10 w-12 rounded-md bg-[var(--ne-accent)]" />
+            </div>
+            <div
+                class="p-2 border-2 rounded-md cursor-pointer"
+                :class="
+                    globalStore.transition === 'fade-scale'
+                        ? 'border-primary'
+                        : 'border-default'
+                "
+                @click="handleChangeTransition('fade-scale')">
+                <div
+                    class="fade-scale-slow h-10 w-12 rounded-md bg-[var(--ne-accent)]" />
+            </div>
         </div>
     </div>
     <div class="fx-col py-3">
         <h3 class="mb-3 font-semibold tracking-tight">其它</h3>
         <div
-            class="fx-between gap-[5px] py-1 px-2 mx-1 leading-7 text-sm rounded-md hover:bg-[var(--ne-accent)] transition-all">
+            class="fx-between gap-[5px] py-1 px-2 leading-7 text-sm rounded-md hover:bg-[var(--ne-accent)] transition-all">
             <span>色弱模式</span>
             <el-switch
-                v-model="invertMode"
+                :model-value="globalStore.invertMode"
                 @change="handleInvertMode" />
         </div>
         <div
-            class="fx-between gap-[5px] py-1 px-2 mx-1 leading-7 text-sm rounded-md hover:bg-[var(--ne-accent)] transition-all">
+            class="fx-between gap-[5px] py-1 px-2 leading-7 text-sm rounded-md hover:bg-[var(--ne-accent)] transition-all">
             <span>灰色模式</span>
             <el-switch
-                v-model="grayMode"
+                :model-value="globalStore.grayMode"
                 @change="handleGrayMode" />
         </div>
     </div>
@@ -175,40 +209,31 @@ const handleChangeColor = (color) => {
 watch(colorValue, (val) => globalStore.theme(val))
 
 /** 浅色侧边栏 */
-const darkSlide = ref(globalStore.darkSlide)
 const handleChangeSlide = (val) => {
     globalStore.set('darkSlide', val)
 }
 
 /** 动画 */
-const transition = ref(globalStore.transition)
+const handleChangeAnimation = (val) => {
+    globalStore.set('routerAnimation', val)
+}
+
 const handleChangeTransition = (val) => {
     globalStore.set('transition', val)
     reload()
 }
 
 /** 色弱模式 */
-const invertMode = ref(globalStore.invertMode)
 const handleInvertMode = (val) => {
     const el = document.documentElement
     globalStore.set('invertMode', val)
-    if (val) {
-        el.classList.add('invert')
-    } else {
-        el.classList.remove('invert')
-    }
+    el.classList.toggle('invert')
 }
 
 /** 灰色模式 */
-const grayMode = ref(globalStore.grayMode)
 const handleGrayMode = (val) => {
     const el = document.documentElement
     globalStore.set('grayMode', val)
-    console.log(val)
-    if (val) {
-        el.classList.add('grayscale')
-    } else {
-        el.classList.remove('grayscale')
-    }
+    el.classList.toggle('grayscale')
 }
 </script>

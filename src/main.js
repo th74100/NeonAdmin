@@ -1,8 +1,8 @@
 import { createApp } from 'vue'
+import { loadVuePlugins } from '@/utils/loadVuePlugins'
 import App from './App.vue'
 import 'virtual:svg-icons/register'
 import 'echarts'
-import { loadVuePlugins } from '@/utils/loadVuePlugins'
 
 import 'virtual:uno.css'
 import '@unocss/reset/tailwind.css'

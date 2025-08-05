@@ -16,6 +16,7 @@
                     class="fx-col h-full p-[10px] border border-default rounded-md bg-[var(--ne-card)] overflow-hidden">
                     <slot></slot>
                 </div>
+
                 <el-scrollbar v-else>
                     <div class="p-[15px]">
                         <slot name="content"></slot>

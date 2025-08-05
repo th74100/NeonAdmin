@@ -1,16 +1,15 @@
 <template>
     <neon-container>
-        <template #header>
-            <neon-form
-                v-model="formData"
-                :schema="formItems"
-                :collapsed="false"
-                :show-collapse-button="true"
-                :collapse-count="4"
-                @submit="handleSearchSubmit"
-                class="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            </neon-form>
-        </template>
+        <neon-form
+            v-model="formData"
+            :schema="formItems"
+            :collapsed="false"
+            :show-collapse-button="true"
+            :collapse-count="4"
+            @submit="handleSearchSubmit"
+            class="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        </neon-form>
+
         <neon-table
             :columns="dataColumns"
             :data-source="dataSource"
