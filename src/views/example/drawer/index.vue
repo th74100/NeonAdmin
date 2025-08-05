@@ -79,7 +79,7 @@
 import { h } from 'vue'
 import { ElTooltip, ElIcon } from 'element-plus'
 import { Warning } from '@element-plus/icons-vue'
-import { useNeonForm } from '@/hooks'
+import { useRef, useNeonForm } from '@/hooks'
 import renderDialog from '@/utils/renderDialog'
 
 const open1 = () =>
@@ -110,12 +110,14 @@ const open4 = () =>
         useDrawer: true,
     })
 
+const formData = useRef({
+    field1: '123',
+    field2: '321',
+    field3: '1',
+})
+
 const [BaseForm, formApi] = useNeonForm({
-    values: {
-        field1: '123',
-        field2: '321',
-        field3: '1',
-    },
+    modelValue: formData,
     schema: [
         {
             label: '字段1',
@@ -186,8 +188,6 @@ const open5 = () =>
 
             return new Promise((resolve) => {
                 setTimeout(() => {
-                    const formData = formApi.getValues()
-                    console.log(formData)
                     resolve()
                 }, 2000)
             })

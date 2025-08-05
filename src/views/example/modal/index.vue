@@ -134,7 +134,7 @@
 
 <script setup>
 import { h, ref } from 'vue'
-import { useNeonForm } from '@/hooks'
+import { useRef, useNeonForm } from '@/hooks'
 import { ElButton } from 'element-plus'
 import renderDialog from '@/utils/renderDialog'
 
@@ -155,7 +155,9 @@ const open4 = () =>
         width: '400px',
     })
 
+const formData = useRef({})
 const [BaseForm, formApi] = useNeonForm({
+    modelValue: formData,
     schema: [
         {
             label: '字段1',
@@ -221,11 +223,8 @@ const open5 = () => {
     renderDialog(BaseForm, {
         onConfirm: async () => {
             await formApi.validate()
-
             return new Promise((resolve) => {
                 setTimeout(() => {
-                    const formData = formApi.getValues()
-                    console.log(formData)
                     resolve()
                 }, 2000)
             })

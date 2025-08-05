@@ -1,16 +1,16 @@
 <template>
     <neon-container>
         <template #header>
-            <h1 class="mb-2 font-bold">基础表单</h1>
+            <h3 class="mb-2 font-bold">基础表单</h3>
             <span class="text-sm text-[var(--ne-foreground)]">
                 表单组件基础示例
             </span>
         </template>
         <el-scrollbar>
             <div class="m-[15px]">
-                <h2 class="pb-[20px] mb-5 border-b border-default font-bold">
+                <h4 class="pb-[20px] mb-5 border-b border-default font-bold">
                     基础示例
-                </h2>
+                </h4>
                 <div class="fx-end mb-5">
                     <el-radio-group
                         v-model="formSize.size"
@@ -48,6 +48,14 @@ defineOptions({
 const [formSize] = useRef({
     size: 'default',
     labelPosition: 'right',
+})
+
+const [formData] = useRef({
+    mention: '@',
+    slider: 50,
+    rangeSlider: [30, 50],
+    marksSlider: [30, 60],
+    switch: false,
 })
 
 /** 表单配置 */
@@ -523,6 +531,11 @@ const schema = [
         label: 'Rate评分',
         key: 'rate',
         type: 'rate',
+        props: {
+            showScore: true,
+            textColor: '#ff9900',
+            scoreTemplate: '{value} points',
+        },
     },
     {
         label: 'Slider滑块',
@@ -647,13 +660,7 @@ const commonConfig = computed(() => ({
 }))
 
 const [BaseForm, formApi] = useNeonForm({
-    values: {
-        mention: '@',
-        slider: 50,
-        rangeSlider: [30, 50],
-        marksSlider: [30, 60],
-        switch: false,
-    },
+    modelValue: formData,
     schema,
     commonConfig,
     onSubmit: async (formData) => {

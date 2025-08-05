@@ -1,31 +1,33 @@
 <template>
     <neon-container>
         <template #header>
-            <h1 class="mb-2 font-bold">查询表单</h1>
+            <h3 class="mb-2 font-bold">查询表单</h3>
             <span class="text-sm text-[var(--ne-foreground)]">
                 查询表单，常用语和表格组合使用，可进行收缩展开。
             </span>
         </template>
         <div class="p-[15px]">
-            <h2 class="pb-[20px] mb-5 border-b border-default font-bold">
+            <h4 class="pb-[20px] mb-5 border-b border-default font-bold">
                 查询表单，默认展开
-            </h2>
+            </h4>
             <base-form />
 
-            <h2 class="pb-[20px] mb-5 border-b border-default font-bold">
+            <h4 class="pb-[20px] mb-5 border-b border-default font-bold">
                 查询表单，默认折叠，折叠时保留2个
-            </h2>
+            </h4>
             <base-form-collapsed />
         </div>
     </neon-container>
 </template>
 
 <script setup>
-import { useNeonForm } from '@/hooks'
+import { useRef, useNeonForm } from '@/hooks'
 
 defineOptions({
     name: 'FormQuery',
 })
+
+const [formData] = useRef({})
 
 /** 查询表单，默认展开 */
 const schema = [
@@ -69,6 +71,7 @@ const schema = [
 ]
 
 const [BaseForm, formApi] = useNeonForm({
+    modelValue: formData,
     schema,
     commonConfig: {
         labelWidth: 80,
@@ -82,6 +85,7 @@ const [BaseForm, formApi] = useNeonForm({
 
 /** 查询表单，默认折叠 */
 const [BaseFormCollapsed, formCollapsedApi] = useNeonForm({
+    modelValue: formData,
     schema,
     commonConfig: {
         labelWidth: 80,
