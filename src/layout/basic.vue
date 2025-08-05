@@ -1,9 +1,13 @@
 <template>
     <el-container class="neon-wrapper">
+        <!--双列布局-->
         <el-aside
             v-if="globalStore.layout === 'default'"
             class="neon-slide"
-            :class="{ 'is-close': subMenu.length === 0 }">
+            :class="[
+                { 'is-close': subMenu.length === 0 },
+                { 'is-collapse': globalStore.isCollapse },
+            ]">
             <div
                 class="neon-menu-bar"
                 :class="{
@@ -20,14 +24,14 @@
                             <li
                                 v-for="item in menu"
                                 :key="item.path"
-                                class="neon-sub-menu-content"
+                                class="neon-menu-item__content"
                                 :class="{
                                     'is-active': activeMenu?.path === item.path,
                                 }"
                                 @click="handleSwitchMenu(item)">
-                                <i class="el-icon">
+                                <el-icon :size="20">
                                     <component :is="item.meta?.icon" />
-                                </i>
+                                </el-icon>
                                 <span class="neon-normal-menu__name">
                                     {{ item.meta.title }}
                                 </span>
@@ -36,50 +40,73 @@
                     </el-scrollbar>
                 </div>
             </div>
-            <div class="neon-menu">
-                <div class="neon-menu__title">Neon Admin</div>
-                <div class="flex-1 w-full h-[calc(100%_-_50px)] ovhflow-hidden">
+            <div
+                class="neon-menu"
+                :style="{
+                    width: globalStore.isCollapse
+                        ? `${globalStore.menuCollapseWidth}px`
+                        : `${globalStore.menuWidth}px`,
+                }">
+                <div
+                    class="neon-menu__heading"
+                    :class="{
+                        hidden: globalStore.isCollapse,
+                    }">
+                    {{ APP_TITLE }}
+                </div>
+                <div
+                    class="flex-1 w-full h-[calc(100%_-_80px)] p-[8px] ovhflow-hidden">
                     <el-scrollbar>
                         <el-menu
                             :default-active="subActiveMenu"
-                            :collapse="false"
+                            :collapse="globalStore.isCollapse"
                             :router="true"
-                            :collapse-transition="false"
-                            :unique-opened="true"
-                            class="neon-sub-menu">
-                            <neon-aside-menu :menuList="subMenu" />
+                            :unique-opened="globalStore.uniqueOpened"
+                            popper-class="layout-menu-popper">
+                            <neon-aside-menu :menu-list="subMenu" />
                         </el-menu>
                     </el-scrollbar>
                 </div>
+                <collapse-comp class="absolute left-2 bottom-2 h-[25px]" />
             </div>
         </el-aside>
+
+        <!--垂直布局-->
         <el-aside
             v-else
-            class="neon-slide vertical-slide border-r border-default"
+            class="neon-slide border-r border-default"
             :class="{
                 'is-dark': globalStore.darkSlide,
+            }"
+            :style="{
+                width: globalStore.isCollapse
+                    ? `${globalStore.menuCollapseWidth}px`
+                    : `${globalStore.menuWidth}px`,
             }">
             <div class="fx-col w-full">
-                <div class="neon-logo">
-                    <router-link to="/">
+                <div class="neon-logo text-nowrap overflow-hidden">
+                    <router-link
+                        to="/"
+                        class="shrink-0">
                         <img src="@/assets/vite.svg" />
                     </router-link>
                     <span
                         class="text-nowrap font-semibold text-[var(--ne-foreground)]">
-                        NeonAdmin
+                        {{ APP_TITLE }}
                     </span>
                 </div>
                 <el-scrollbar class="w-full">
                     <el-menu
                         :default-active="subActiveMenu"
-                        :collapse="false"
+                        :collapse="globalStore.isCollapse"
                         :router="true"
-                        :collapse-transition="false"
-                        :unique-opened="true"
-                        class="neon-sub-menu">
-                        <neon-aside-menu :menuList="menu" />
+                        :unique-opened="globalStore.uniqueOpened"
+                        class="vertical-slide"
+                        popper-class="layout-menu-popper">
+                        <neon-aside-menu :menu-list="menu" />
                     </el-menu>
                 </el-scrollbar>
+                <collapse-comp class="mt-3 px-3 pb-3" />
             </div>
         </el-aside>
         <div class="neon-main">
@@ -110,12 +137,21 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, inject, onMounted } from 'vue'
+import {
+    h,
+    ref,
+    watch,
+    computed,
+    inject,
+    resolveComponent,
+    onMounted,
+} from 'vue'
+import { ElIcon } from 'element-plus'
 import { useRouter, useRoute } from 'vue-router'
 import { $notification, timeFix } from '@/utils'
 import useGlobalStore from '@/stores/modules/global'
 import useAuthStore from '@/stores/modules/auth'
-import useKeepLive from '@/stores/modules/keepLive'
+import useKeepliveStore from '@/stores/modules/keeplive'
 import NeonHeader from './components/NeonHeader.vue'
 import NeonUser from './components/NeonUser.vue'
 import NeonTabs from './components/NeonTabs.vue'
@@ -125,12 +161,19 @@ const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
 const globalStore = useGlobalStore()
-const keepLive = useKeepLive()
+const keepLive = useKeepliveStore()
 
-const transition = computed(() => globalStore.transition)
+const APP_TITLE = import.meta.env.VITE_APP_TITLE
+const user = computed(() => authStore.getUserInfo)
+const transition = computed(() => {
+    if (globalStore.routerAnimation) {
+        return globalStore.transition
+    }
+    return ''
+})
 
 /** 菜单 */
-const menu = ref([]) // 主菜单
+const menu = computed(() => authStore.getMenuList) // 主菜单
 const subMenu = ref([]) // 子菜单
 const activeMenu = ref({}) // 当前主激活菜单
 const subActiveMenu = ref('') // 当前子激活菜单
@@ -184,11 +227,45 @@ watch(
     },
 )
 
+/** 折叠、展开按钮组件 */
+const CollapseComp = {
+    setup() {
+        return () =>
+            h('div', {}, [
+                h(
+                    'button',
+                    {
+                        class: 'fx-center w-[24px] h-[24px] rounded-md text-[var(--ne-foreground)] bg-[var(--ne-accent)] hover:bg-[var(--ne-accent-deep)]',
+                        onClick: () => {
+                            globalStore.set(
+                                'isCollapse',
+                                !globalStore.isCollapse,
+                            )
+                        },
+                    },
+                    [
+                        h(
+                            ElIcon,
+                            { size: 14 },
+                            {
+                                default: () =>
+                                    h(
+                                        globalStore.isCollapse
+                                            ? resolveComponent('DArrowRight')
+                                            : resolveComponent('DArrowLeft'),
+                                    ),
+                            },
+                        ),
+                    ],
+                ),
+            ])
+    },
+}
+
 onMounted(() => {
-    menu.value = authStore.getMenuList
     settingMenu()
 
-    $notification.success(`Hi, ${authStore.getUserInfo.username}`, timeFix())
+    $notification.success(`Hi, ${user.value.username}`, timeFix())
 })
 </script>
 
