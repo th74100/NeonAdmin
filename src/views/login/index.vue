@@ -1,9 +1,14 @@
 <template>
     <div class="wh-full">
         <div class="login-layout">
-            <div class="login-side fx-center">
+            <div class="login-side fx-center flex-col">
+                <div class="el-image w-[400px] h-[360px] mb-15 animate-float">
+                    <img
+                        src="@/assets/images/login.png"
+                        class="el-image__inner" />
+                </div>
                 <div class="relative z-10">
-                    <h1>NeonAdmin</h1>
+                    <h1>欢迎登录 {{ APP_TITLE }} 管理平台</h1>
                 </div>
                 <div class="points-wrapper">
                     <i class="point"></i>
@@ -44,16 +49,28 @@
 import { ref } from 'vue'
 import { useAsyncState } from '@vueuse/core'
 import { useRouter, useRoute } from 'vue-router'
-import { useNeonForm } from '@/hooks'
+import { useRef, useNeonForm } from '@/hooks'
 import { $message, tool } from '@/utils'
 import { initDynamicRouter } from '@/router/modules/dynamicRouter'
 import useUserStore from '@/stores/modules/user'
 import { HOME_PATH } from '@/config'
 import { userLogin } from '@/api'
 
+defineOptions({
+    name: 'LoginIndex',
+})
+
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
+
+const APP_TITLE = import.meta.env.VITE_APP_TITLE
+
+/** 表单配置 */
+const [formData] = useRef({
+    username: '',
+    password: '',
+})
 
 const schema = [
     {
@@ -92,10 +109,11 @@ const { state, execute } = useAsyncState(
 )
 
 const [BaseForm, formApi] = useNeonForm({
+    modelValue: formData,
     schema,
     commonConfig: {
         size: 'large',
-        actionWrapperClass: 'w-full mt-[15px]',
+        actionWrapperClass: 'w-full mt-5',
         resetButtonOptions: {
             show: false,
         },
@@ -140,10 +158,10 @@ const handleSubmit = async (formData) => {
 
 <style lang="scss" scoped>
 .login-layout {
-    @apply grid grid-cols-2 h-full;
+    @apply flex h-full;
 
     .login-side {
-        @apply relative bg-gradient-to-b from-indigo-500 from-10% to-[var(--ne-primary)] dark:bg-[#070709] before:content-[''] before:absolute before:inset-0 before:blur-[100px];
+        @apply flex-1 relative bg-gradient-to-b from-indigo-500 dark:from-black from-10% to-[var(--ne-primary)] dark:to-black before:content-[''] before:absolute before:inset-0 before:blur-[100px];
         &::before {
             background: linear-gradient(
                 155deg,
@@ -154,12 +172,12 @@ const handleSubmit = async (formData) => {
         }
 
         h1 {
-            @apply text-white text-6xl;
+            @apply text-white text-3xl;
         }
     }
 
     .login-main {
-        @apply px-[10%];
+        @apply w-[40%] px-6 lg:px8 lg:flex-initial;
     }
 
     .points-wrapper {
@@ -171,7 +189,7 @@ const handleSubmit = async (formData) => {
 
         .point {
             --sz-point: 4px;
-            @apply absolute top-[-8px] w-[var(--sz-point)] h-[var(--sz-point)] rounded-full animate-[floating-points_ease-in-out_infinite] bg-[#5ddcff] pointer-events-none;
+            @apply absolute top-[-8px] w-[var(--sz-point)] h-[var(--sz-point)] rounded-full animate-[floating-points_ease-in-out_infinite] bg-[#5ddcff] dark:bg-[#787979] pointer-events-none;
 
             &:nth-child(1) {
                 @apply left-[10%] animate-duration-[2.35s] animate-delay-[0.2s] opacity-100;
@@ -213,6 +231,22 @@ const handleSubmit = async (formData) => {
                 @apply left-[65%] animate-duration-[2.5s] animate-delay-[0.2s] opacity-100;
             }
         }
+    }
+}
+
+.animate-float {
+    animation: float 5s linear 0ms infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0);
     }
 }
 </style>
