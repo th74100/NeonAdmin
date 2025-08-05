@@ -35,8 +35,23 @@ const globalStore = defineStore('global', {
             colorPrimary: APP_COLOR,
             predefineColors: APP_PREDEFINE_COLOR,
 
+            // 是否开启路由动画
+            routerAnimation: true,
+
             // 路由动画
             transition: ROUTER_ANIMATION,
+
+            // 是否折叠侧边栏
+            isCollapse: false,
+
+            // 菜单栏展开宽度
+            menuWidth: 230,
+
+            // 菜单栏折叠宽度
+            menuCollapseWidth: 60,
+
+            // 是否只保持一个子菜单展开
+            uniqueOpened: true,
 
             // 暗黑模式
             darkMode: false,
@@ -59,17 +74,17 @@ const globalStore = defineStore('global', {
 
         theme(value) {
             const el = document.documentElement
-            el.style.setProperty('--el-color-primary', value)
+            el.style.setProperty(
+                '--el-color-primary',
+                this.darkMode ? `${tool.darken(value, 0.2)}` : `${value}`,
+            )
             for (let i = 1; i <= 9; i++) {
-                el.style.setProperty(
-                    `--el-color-primary-light-${i}`,
-                    tool.lighten(value, i / 10),
-                )
+                const color = this.darkMode
+                    ? tool.darken(value, i / 10)
+                    : tool.lighten(value, i / 10)
+                el.style.setProperty(`--el-color-primary-light-${i}`, color)
 
-                el.style.setProperty(
-                    `--el-color-primary-dark-${i}`,
-                    tool.darken(value, i / 10),
-                )
+                //el.style.setProperty(`--el-color-primary-dark-${i}`, color)
             }
 
             if (this.invertMode) {
