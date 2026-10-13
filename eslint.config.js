@@ -5,6 +5,15 @@ import { defineConfig } from "eslint/config"
 
 export default defineConfig([
     {
+        // 构建产物、依赖目录不参与 lint
+        ignores: [
+            "dist/**",
+            "node_modules/**",
+            "public/**",
+            "*.min.js",
+        ],
+    },
+    {
         files: ["**/*.{js,mjs,cjs,vue}"],
         plugins: { js },
         extends: ["js/recommended"],
