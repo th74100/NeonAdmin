@@ -1,5 +1,8 @@
 :root {
-    --ne-font-family: -apple-system,blinkmacsystemfont,"Segoe UI",roboto,"Helvetica Neue",arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    --ne-font-family:
+        -apple-system, blinkmacsystemfont, 'Segoe UI', roboto, 'Helvetica Neue',
+        arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
     --ne-primary: var(--el-color-primary);
     --ne-primary-light-9: var(--el-color-primary-light-9);
     --ne-slide: #fff;
@@ -9,38 +12,38 @@
     --ne-vert-slide-width: 225px;
     --ne-background: #fff;
     --ne-background-deep: #f5f7f9;
-    --ne-border: #E4E4E7;
-    --ne-foreground: #474A4D;
+    --ne-border: #e4e4e7;
+    --ne-foreground: #474a4d;
     --ne-muted-foreground: #71717a;
     --ne-header: #fff;
     --ne-card: #fff;
-    --ne-accent: #F4F4F5;
-    --ne-accent-deep: #E3E6E8;
+    --ne-accent: #f4f4f5;
+    --ne-accent-deep: #e3e6e8;
     --ne-scrollbar: #e3e3e4;
-} 
+}
 
 /** 暗黑主题 */
 html.dark {
-    --ne-slide: #1C1E23;
+    --ne-slide: #1c1e23;
     --ne-slide-deep: #131518;
-    --ne-background-deep: #14161A;
-    --ne-background: #14161A;
-    --ne-border: #36363A;
-    --ne-foreground: #C8C8C9;
+    --ne-background-deep: #14161a;
+    --ne-background: #14161a;
+    --ne-border: #36363a;
+    --ne-foreground: #c8c8c9;
     --ne-muted-foreground: #b2b2b3;
-    --ne-header: #1C1E23;
-    --ne-card: #1C1E23;
+    --ne-header: #1c1e23;
+    --ne-card: #1c1e23;
     --ne-accent: #2c2c2d;
-    --ne-accent-deep: #3A3D40;
+    --ne-accent-deep: #3a3d40;
 }
 
 /** 深色侧边栏模式 */
 .is-dark {
-    --ne-slide: #1C1E23;
+    --ne-slide: #1c1e23;
     --ne-slide-deep: #131518;
-    --ne-foreground: #C8C8C9;
+    --ne-foreground: #c8c8c9;
     --ne-accent: #2c2c2d;
-    --ne-accent-deep: #3A3D40;
+    --ne-accent-deep: #3a3d40;
 }
 
 html.dark .el-table {
@@ -48,25 +51,26 @@ html.dark .el-table {
     --el-table-header-text-color: var(--ne-foreground);
 }
 
-::view-transition-new(root),::view-transition-old(root) {
+::view-transition-new(root),
+::view-transition-old(root) {
     animation: none;
-    mix-blend-mode: normal
+    mix-blend-mode: normal;
 }
 
 ::view-transition-old(root) {
-    z-index: 1
+    z-index: 1;
 }
 
 ::view-transition-new(root) {
-    z-index: 100
+    z-index: 100;
 }
 
 html.dark::view-transition-old(root) {
-    z-index: 100
+    z-index: 100;
 }
 
 html.dark::view-transition-new(root) {
-    z-index: 1
+    z-index: 1;
 }
 
 ::-webkit-scrollbar {
@@ -86,21 +90,26 @@ body {
     @apply wh-full text-[var(--ne-foreground)] font-[var(--ne-font-family)] text-md bg-[var(--ne-background-deep)] overflow-hidden;
 }
 
-h1, h2,h3,h4,h5,h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     @apply font-bold;
 }
 
 h1 {
-    font-size: 2em
+    font-size: 2em;
 }
 h2 {
-    font-size: 1.5em
+    font-size: 1.5em;
 }
 h3 {
-    font-size: 1.17em
+    font-size: 1.17em;
 }
 h5 {
-    font-size: 0.83em
+    font-size: 0.83em;
 }
 
 #app {
@@ -153,21 +162,21 @@ h5 {
     }
 
     .el-sub-menu.is-active {
-        .el-sub-menu__title {
+        > .el-sub-menu__title {
             @apply text-[var(--ne-primary)] dark:text-white;
         }
     }
 }
 
 .layout-menu-popper {
-	&.is-light {
-		@apply border-0;
-	}
+    &.is-light {
+        @apply border-0;
+    }
 
-	.el-menu--popup {
-		@apply p-[10px] rounded-md;
+    .el-menu--popup {
+        @apply p-[10px] rounded-md;
         @extend .commonMenu;
-	}
+    }
 }
 
 /** 侧边导航栏 */
@@ -194,7 +203,7 @@ h5 {
             .el-sub-menu__title {
                 @apply px-[12px] py-[23.5px];
             }
-            
+
             .el-sub-menu.is-active .el-sub-menu__title {
                 @apply text-white bg-[var(--ne-primary)] dark:bg-[var(--ne-accent)];
             }
@@ -253,7 +262,7 @@ h5 {
             @apply text-lg transition duration-200;
         }
 
-        &:hover{
+        &:hover {
             i {
                 @apply scale-[1.15];
             }
@@ -275,7 +284,6 @@ h5 {
     .neon-menu__heading {
         @apply h-[50px] px-[15px] text-nowrap text-[var(--ne-foreground)] text-lg font-500 leading-[50px] border-b border-[var(--ne-border)]  overflow-hidden;
     }
-
 }
 
 // 右侧内容区
@@ -336,67 +344,11 @@ h5 {
     }
 }
 
-/** form */
-.neon-form {
-    @apply grid gap-[18px];
-    .el-form-item {
-        @apply items-center mb-0;
-    }
-    &.el-form--inline {
-        .el-form-item {
-            @apply mr-[20px];
-        }
-    }
-    .el-cascader,
-    .el-input-number {
-        @apply w-full;
-    }
-    .el-input-number {
-        > span {
-            @apply h-[50%] opacity-0 transition-all duration-150;
-            &:hover {
-                @apply h-[60%];
-                + span {
-                    @apply h-[40%];
-                }
-            }
-        }
-        &:hover {
-            > span {
-                @apply opacity-100;
-            }
-        }
-    }
-    .el-input__inner[type="number"] {
-        @apply text-left;
-    }
-    .el-input-group__append, .el-input-group__prepend {
-        @apply px-[10px];
-    }
-    .el-input-group__append .el-select, 
-    .el-input-group__append .el-button, 
-    .el-input-group__prepend .el-select, 
-    .el-input-group__prepend .el-button {
-        @apply mx-[-10px];
-    }
-    .el-checkbox-group {
-        @apply flex flex-wrap gap-[15px];
-        .el-checkbox {
-            @apply mr-0;
-        }
-    }
-    .input-with-select {
-        .el-input-group__prepend {
-            @apply bg-transparent;
-        }
-    }
-}
-
 /** 遮罩层 背景 */
 .el-image-viewer__mask,
 .el-loading-mask,
 .el-overlay {
-	@apply backdrop-blur-sm;
+    @apply backdrop-blur-sm;
 }
 
 /** dialog */

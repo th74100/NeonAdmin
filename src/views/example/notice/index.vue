@@ -16,9 +16,9 @@
             <div class="fx-col gap-5">
                 <div
                     class="border border-default rounded-md bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">
+                    <h3 class="border-b border-default p-4">
                         Message 消息提示（默认）
-                    </h2>
+                    </h3>
                     <div class="px-4 py-5">
                         <el-button
                             type="primary"
@@ -45,9 +45,9 @@
 
                 <div
                     class="border border-default rounded-md bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">
+                    <h3 class="border-b border-default p-4">
                         Message 消息提示（自定义）
-                    </h2>
+                    </h3>
                     <div class="px-4 py-5">
                         <el-button
                             type="primary"
@@ -117,9 +117,9 @@
                 </el-alert>
                 <div
                     class="border border-default rounded-md bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">
+                    <h3 class="border-b border-default p-4">
                         Notification 消息提示
-                    </h2>
+                    </h3>
                     <div class="px-4 py-5">
                         <el-button
                             type="primary"
@@ -169,9 +169,9 @@
                 </el-alert>
                 <div
                     class="border border-default rounded-md bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">
+                    <h3 class="border-b border-default p-4">
                         Message Box 消息弹框
-                    </h2>
+                    </h3>
                     <div class="px-4 py-5">
                         <el-button
                             type="info"

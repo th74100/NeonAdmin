@@ -16,7 +16,7 @@
             <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
                 <div
                     class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">基本使用</h2>
+                    <h3 class="border-b border-default p-4">基本使用</h3>
                     <p class="px-4 py-6">一个基础的弹窗示例</p>
                     <div class="border-t border-default px-4 py-3 text-center">
                         <el-button
@@ -28,7 +28,7 @@
                 </div>
                 <div
                     class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">可拖拽示例</h2>
+                    <h3 class="border-b border-default p-4">可拖拽示例</h3>
                     <p class="px-4 py-6">配置 draggable 可开启拖拽功能</p>
                     <div class="border-t border-default px-4 py-3 text-center">
                         <el-button
@@ -40,7 +40,7 @@
                 </div>
                 <div
                     class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">自定义标题示例</h2>
+                    <h3 class="border-b border-default p-4">自定义标题示例</h3>
                     <p class="px-4 py-6">配置 title 可自定义标题</p>
                     <div class="border-t border-default px-4 py-3 text-center">
                         <el-button
@@ -52,7 +52,7 @@
                 </div>
                 <div
                     class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">自定义弹窗宽度</h2>
+                    <h3 class="border-b border-default p-4">自定义弹窗宽度</h3>
                     <p class="px-4 py-6">配置 width 可自定义宽度</p>
                     <div class="border-t border-default px-4 py-3 text-center">
                         <el-button
@@ -64,7 +64,7 @@
                 </div>
                 <div
                     class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">表单弹窗示例</h2>
+                    <h3 class="border-b border-default p-4">表单弹窗示例</h3>
                     <p class="px-4 py-6">弹窗与表单结合</p>
                     <div class="border-t border-default px-4 py-3 text-center">
                         <el-button
@@ -76,7 +76,7 @@
                 </div>
                 <div
                     class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">嵌套弹窗示例</h2>
+                    <h3 class="border-b border-default p-4">嵌套弹窗示例</h3>
                     <p class="px-4 py-6">在已经打开的弹窗中再次打开弹窗</p>
                     <div class="border-t border-default px-4 py-3 text-center">
                         <el-button
@@ -88,7 +88,7 @@
                 </div>
                 <div
                     class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">自动计算高度</h2>
+                    <h3 class="border-b border-default p-4">自动计算高度</h3>
                     <p class="px-4 py-6">可根据内容并自动调整高度</p>
                     <div class="border-t border-default px-4 py-3 text-center">
                         <el-button
@@ -100,7 +100,7 @@
                 </div>
                 <div
                     class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">动态配置示例</h2>
+                    <h3 class="border-b border-default p-4">动态配置示例</h3>
                     <p class="px-4 py-6">通过 setState 动态调整弹窗数据</p>
                     <div class="border-t border-default px-4 py-3 text-center">
                         <el-button
@@ -113,9 +113,9 @@
 
                 <div
                     class="border border-default rounded-md shadow-sm bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">
+                    <h3 class="border-b border-default p-4">
                         slots插槽自定义头部和按钮操作区域
-                    </h2>
+                    </h3>
                     <p class="px-4 py-6">
                         通过 slots 插槽，自定义头部和按钮操作区
                     </p>

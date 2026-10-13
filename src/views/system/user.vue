@@ -7,7 +7,7 @@
             :show-collapse-button="true"
             :collapse-count="4"
             @submit="handleSearchSubmit"
-            class="grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            :common-config="formGridConfig">
         </neon-form>
 
         <neon-table
@@ -49,6 +49,11 @@ defineOptions({
 })
 
 const loading = ref(false)
+
+/** 表单栅格配置：1 / 2 / 3 / 4 列响应式 */
+const formGridConfig = {
+    col: { span: 24, sm: 12, md: 8, lg: 6 },
+}
 
 // 弹窗内容组件
 const [dialogFormState] = useRef({
@@ -174,8 +179,14 @@ const formItems = computed(() => [
         label: '数字',
         key: 'age',
         type: 'number',
-        placeholder: '请输入年龄',
-        controlsPosition: 'right',
+        props: {
+            placeholder: '请输入年龄',
+            controlsPosition: 'right',
+            align: 'left',
+            style: {
+                width: '100%',
+            }
+        }
     },
     {
         label: 'Select选择框',

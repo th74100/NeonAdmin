@@ -1,7 +1,7 @@
 <template>
     <neon-container>
         <template #header>
-            <h1 class="mb-2 font-bold">抽屉组件示例</h1>
+            <h3 class="mb-2 font-bold">抽屉组件示例</h3>
             <span class="text-sm text-[var(--ne-foreground)]">
                 抽屉组件通常用于在当前页面上显示一个覆盖层，用以展示重要信息或提供用户交互界面
             </span>
@@ -22,7 +22,7 @@
             <div class="fx-col gap-5">
                 <div
                     class="border border-default rounded-md bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">基本使用</h2>
+                    <h3 class="border-b border-default p-4">基本使用</h3>
                     <div class="px-4 py-5">
                         <el-button
                             type="primary"
@@ -48,7 +48,7 @@
                 </div>
                 <div
                     class="border border-default rounded-md bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">表单抽屉示例</h2>
+                    <h3 class="border-b border-default p-4">表单抽屉示例</h3>
                     <div class="px-4 py-5">
                         <el-button
                             type="primary"
@@ -59,9 +59,9 @@
                 </div>
                 <div
                     class="border border-default rounded-md bg-[var(--ne-card)]">
-                    <h2 class="border-b border-default p-4">
+                    <h3 class="border-b border-default p-4">
                         自定义头部和底部区域
-                    </h2>
+                    </h3>
                     <div class="px-4 py-5">
                         <el-button
                             type="primary"

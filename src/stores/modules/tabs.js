@@ -159,6 +159,33 @@ const tabsStore = defineStore('tabs', {
             }
         },
 
+        /**
+         * 激活隐藏区(affixTabs)中的标签：与可见区末位标签做位置对换。
+         * 被挤出的标签占用被点进来标签原来的位置，进入可见区末位。
+         */
+        activateAffixTab(path) {
+            const affixIndex = this.affixTabs.findIndex(
+                (item) => item.path === path,
+            )
+
+            // 不在隐藏区（点击的是可见区标签），无需处理
+            if (affixIndex === -1) return
+
+            // 可见区为空时直接移入
+            if (!this.visitedViews.length) {
+                this.visitedViews.push(this.affixTabs.splice(affixIndex, 1)[0])
+                return
+            }
+
+            const lastIndex = this.visitedViews.length - 1
+            const incoming = this.affixTabs[affixIndex]
+            const outgoing = this.visitedViews[lastIndex]
+
+            // 位置对换：双方各占对方原来的槽位
+            this.visitedViews.splice(lastIndex, 1, incoming)
+            this.affixTabs.splice(affixIndex, 1, outgoing)
+        },
+
         updateSortable(index, tab) {
             this.visitedViews.splice(index, 0, tab)
         },

@@ -33,8 +33,6 @@ const generateRoutes = (datas) => {
 
 /** 加载组件 */
 const loadComponent = (component) => {
-    if (!component) return emptyLayout
-
     const page = modules[`../views/${component}.vue`]
         ? modules[`../views/${component}.vue`]
         : modules[`../views/${component}/index.vue`]

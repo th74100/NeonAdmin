@@ -15,14 +15,6 @@ export default defineConfig({
         'fx-col': 'flex flex-col',
     },
     theme: {
-        extend: {
-            gridColumnStart: {
-                '-2': '2',
-            },
-            gridColumnEnd: {
-                '-1': '-1',
-            },
-        },
         fontSize: {
             xs: '12px',
             sm: '14px',

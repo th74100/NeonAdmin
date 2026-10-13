@@ -56,7 +56,12 @@ const schema = [
         props: {
             controlsPosition: 'right',
             placeholder: '请输入数字',
+            align: 'left',
+            style: {
+                width: '100%',
+            },
         },
+
     },
     {
         label: '下拉框',

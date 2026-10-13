@@ -97,8 +97,8 @@
                             月访问量
                         </button>
                     </div>
-                    <WidgetsStackedChart v-if="activeTab === 1" />
-                    <WidgetsBarChart v-else />
+                    <StackedChart v-if="activeTab === 1" />
+                    <BarChart v-else />
                 </div>
             </div>
         </template>
@@ -108,6 +108,8 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import useAuthStore from '@/stores/modules/auth'
+import StackedChart from './StackedChart'
+import BarChart from './BarChart'
 
 const authStore = useAuthStore()
 

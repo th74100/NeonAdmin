@@ -2,104 +2,120 @@
     <el-form
         ref="form"
         :model="formData"
-        v-bind="tool.omit(_options, ['wrapperClass'])"
-        @submit.prevent="onSubmit(formInstance)"
-        class="neon-form"
-        :class="['neon-form', _options.wrapperClass]">
-        <template
-            v-for="(item, index) in fieldItems"
-            :key="item.key">
-            <el-form-item
+        v-bind="_formOptions"
+        @submit.prevent="onSubmit(formInstance)">
+        <el-row v-bind="_row">
+            <el-col
+                v-for="(item, index) in fieldItems"
+                :key="item.key"
                 v-show="isCollapsed || index < collapseCount"
-                :label="item.label"
-                :labelWidth="item.labelWidth"
-                :prop="item.key"
-                :rules="item.rules"
-                :style="getStyle(item)">
-                <template
-                    v-if="item.help"
-                    #label>
-                    <div class="flex items-center gap-[5px]">
-                        <span>{{ item.label }}</span>
-                        <el-tooltip
-                            :content="item.help"
-                            placement="right">
-                            <el-icon>
-                                <Warning />
-                            </el-icon>
-                        </el-tooltip>
-                    </div>
-                </template>
-                <slot :name="item.key">
-                    <component-item
-                        :modelValue="formData"
-                        :item="item" />
-                </slot>
-            </el-form-item>
-        </template>
-        <el-form-item
-            v-if="
-                (_buttons.submitButtonOptions.show ||
-                    _buttons.resetButtonOptions.show ||
-                    _buttons.cancelButtonOptions.show) &&
-                fieldItems.length
-            "
-            :class="_buttons.actionWrapperClass">
-            <slot name="buttons">
-                <el-button
-                    v-if="_buttons.submitButtonOptions.show"
-                    v-bind="
-                        tool.omit(_buttons.submitButtonOptions, [
-                            'show',
-                            'text',
-                        ])
-                    "
-                    @click="onSubmit(formInstance)">
-                    {{ _buttons.submitButtonOptions.text }}
-                </el-button>
-                <el-button
-                    v-if="_buttons.resetButtonOptions.show"
-                    v-bind="
-                        tool.omit(_buttons.resetButtonOptions, ['show', 'text'])
-                    "
-                    @click="onReset(formInstance)">
-                    {{ _buttons.resetButtonOptions.text }}
-                </el-button>
-                <el-button
-                    v-if="_buttons.cancelButtonOptions.show"
-                    v-bind="
-                        tool.omit(_buttons.cancelButtonOptions, [
-                            'show',
-                            'text',
-                        ])
-                    "
-                    @click="onCancel">
-                    {{ _buttons.cancelButtonOptions.text }}
-                </el-button>
-            </slot>
-            <!-- 折叠/展开按钮 -->
+                v-bind="getColProps(item)">
+                <el-form-item
+                    :label="item.label"
+                    :labelWidth="item.labelWidth"
+                    :prop="item.key"
+                    :rules="item.rules"
+                    :style="getStyle(item)">
+                    <template
+                        v-if="item.help"
+                        #label>
+                        <div class="flex items-center gap-[5px]">
+                            <span>{{ item.label }}</span>
+                            <el-tooltip
+                                :content="item.help"
+                                placement="right">
+                                <el-icon>
+                                    <Warning />
+                                </el-icon>
+                            </el-tooltip>
+                        </div>
+                    </template>
+                    <slot :name="item.key">
+                        <component-item
+                            :modelValue="formData"
+                            :item="item" />
+                    </slot>
+                </el-form-item>
+            </el-col>
 
-            <el-button
-                v-if="showCollapseButton && schema.length > collapseCount"
-                type="primary"
-                link
-                @click="toggleCollapsed">
-                <span>
-                    {{
-                        !isCollapsed
-                            ? collapseButtonText[0]
-                            : collapseButtonText[1]
-                    }}
-                </span>
-                <div
-                    class="ml-1 transition-transform duration-300"
-                    :class="{ 'rotate-180': isCollapsed }">
-                    <el-icon>
-                        <ArrowDown />
-                    </el-icon>
-                </div>
-            </el-button>
-        </el-form-item>
+            <el-col
+                v-if="
+                    (_buttons.submitButtonOptions.show ||
+                        _buttons.resetButtonOptions.show ||
+                        _buttons.cancelButtonOptions.show) &&
+                    fieldItems.length
+                "
+                v-bind="_buttonCol">
+                <el-form-item>
+                    <div
+                        :class="[
+                            'flex flex-wrap w-full',
+                            _buttons.actionAlignClass,
+                        ]">
+                        <slot name="buttons">
+                            <el-button
+                                v-if="_buttons.submitButtonOptions.show"
+                                v-bind="
+                                    tool.omit(_buttons.submitButtonOptions, [
+                                        'show',
+                                        'text',
+                                    ])
+                                "
+                                @click="onSubmit(formInstance)">
+                                {{ _buttons.submitButtonOptions.text }}
+                            </el-button>
+                            <el-button
+                                v-if="_buttons.resetButtonOptions.show"
+                                v-bind="
+                                    tool.omit(_buttons.resetButtonOptions, [
+                                        'show',
+                                        'text',
+                                    ])
+                                "
+                                @click="onReset(formInstance)">
+                                {{ _buttons.resetButtonOptions.text }}
+                            </el-button>
+                            <el-button
+                                v-if="_buttons.cancelButtonOptions.show"
+                                v-bind="
+                                    tool.omit(_buttons.cancelButtonOptions, [
+                                        'show',
+                                        'text',
+                                    ])
+                                "
+                                @click="onCancel">
+                                {{ _buttons.cancelButtonOptions.text }}
+                            </el-button>
+                        </slot>
+                        <!-- 折叠/展开按钮 -->
+
+                        <el-button
+                            v-if="
+                                showCollapseButton &&
+                                schema.length > collapseCount
+                            "
+                            type="primary"
+                            link
+                            @click="toggleCollapsed">
+                            <span>
+                                {{
+                                    !isCollapsed
+                                        ? collapseButtonText[0]
+                                        : collapseButtonText[1]
+                                }}
+                            </span>
+                            <div
+                                class="ml-1 transition-transform duration-300"
+                                :class="{ 'rotate-180': isCollapsed }">
+                                <el-icon>
+                                    <ArrowDown />
+                                </el-icon>
+                            </div>
+                        </el-button>
+                    </div>
+                </el-form-item>
+            </el-col>
+        </el-row>
     </el-form>
 </template>
 
@@ -238,31 +254,78 @@ const toggleCollapsed = () => {
 }
 
 /** form配置项 */
-const _options = computed(() => {
+const _formOptions = computed(() => {
     const config = {
-        wrapperClass: '',
         labelPosition: 'right',
     }
     return Object.assign(
         config,
         tool.omit(commonConfig, [
             'buttonAlign',
+            'wrapperClass',
+            'actionWrapperClass',
             'submitButtonOptions',
             'resetButtonOptions',
             'cancelButtonOptions',
+            'row',
+            'col',
+            'buttonCol',
         ]),
     )
 })
 
+/** 栅格容器配置：el-row */
+const _row = computed(() => ({
+    gutter: 18,
+    ...(commonConfig.row || {}),
+}))
+
+/** 全局默认列配置：el-col */
+const _col = computed(() => ({
+    span: 24,
+    ...(commonConfig.col || {}),
+}))
+
+/** 单字段列配置：全局默认 + item.col 覆盖 */
+const getColProps = (item) => ({
+    ..._col.value,
+    ...(item.col || {}),
+})
+
+/** 按钮列配置 */
+const _buttonCol = computed(() => {
+    const { buttonCol } = commonConfig
+
+    // 'auto'：不锁宽度，用 flex 吃掉当前行剩余空间
+    if (buttonCol === 'auto') {
+        return { span: 24, class: '!flex-auto' }
+    }
+
+    // false / 未配置 / 非法值：独占一行
+    if (!buttonCol || typeof buttonCol !== 'object') {
+        return { span: 24 }
+    }
+
+    // 对象：整体透传给 el-col
+    const { span = 24, offset = 0 } = buttonCol
+    if (import.meta.env.DEV && span + offset > 24) {
+        console.warn(
+            '[NeonForm] buttonCol 的 span + offset 超过 24，按钮列会换行',
+            buttonCol,
+        )
+    }
+    return { span: 24, ...buttonCol }
+})
+
 /** 按钮配置 */
 const alignMap = {
-    start: 'mr-auto',
-    center: 'mx-auto',
-    right: 'col-start--2 ml-auto',
+    start: 'justify-start',
+    center: 'justify-center',
+    right: 'justify-end',
 }
 const _buttons = computed(() => {
     const config = {
-        actionWrapperClass: '',
+        actionAlignClass: '',
         submitButtonOptions: {
             type: 'primary',
             text: '提交',
@@ -286,16 +349,15 @@ const _buttons = computed(() => {
 
     const {
         buttonAlign = 'right',
-        actionWrapperClass,
         submitButtonOptions = {},
         resetButtonOptions = {},
         cancelButtonOptions = {},
     } = commonConfig
 
-    const itemActionWrapperClass = actionWrapperClass ?? alignMap[buttonAlign]
+    const actionAlignClass = alignMap[buttonAlign] ?? alignMap.right
 
     return Object.assign(config, {
-        actionWrapperClass: itemActionWrapperClass,
+        actionAlignClass,
         submitButtonOptions: Object.assign(
             config.submitButtonOptions,
             submitButtonOptions,
@@ -319,7 +381,7 @@ const rootProps = [
     'style',
     'rules',
     'help',
-    'wrapperClass',
+    'col',
 ]
 const getProps = (item) => {
     const _props = {
@@ -427,8 +489,8 @@ defineExpose({
     validate(...args) {
         return formInstance.value?.validate(...args)
     },
-    validateFileds(...args) {
-        return formInstance.value?.validateFields(...args)
+    validateField(...args) {
+        return formInstance.value?.validateField(...args)
     },
     resetFields() {
         formInstance.value?.resetFields()

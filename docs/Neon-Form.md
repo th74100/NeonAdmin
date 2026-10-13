@@ -21,9 +21,9 @@
 
 ## Props 配置
 
-| 属性               | 类型    | 默认值           | 描述                  |
-| ------------------ | ------- | ---------------- | --------------------- |
-| values             | Object  | {}               | 表单的初始值          |
+| 属性               | 类型    | 默认值           | 描述                          |
+| ------------------ | ------- | ---------------- | ----------------------------- |
+| modelValue         | Object  | {}               | 表单数据，配合 `v-model` 使用 |
 | schema             | Array   | []               | 表单项配置数组        |
 | commonConfig       | Object  | {}               | 公共配置对象          |
 | collapsed          | Boolean | true             | 默认是否展开          |
@@ -35,14 +35,18 @@
 
 `commonConfig` 对象包含以下属性：
 
-| 属性                | 类型   | 默认值                 | 描述                                    |
-| ------------------- | ------ | ---------------------- | --------------------------------------- |
-| wrapperClass        | String | -                      | 表单的样式                              |
-| labelPosition       | String | 'right'                | 表单项标签的位置 'left', 'right', 'top' |
-| actionWrapperClass  | String | 'col-start--2 ml-auto' | 表单项按钮 item 的样式                  |
-| submitButtonOptions | Object | -                      | 提交按钮的配置                          |
-| resetButtonOptions  | Object | -                      | 重置按钮的配置                          |
-| cancelButtonOptions | Object | -                      | 取消按钮的配置                          |
+| 属性                | 类型                          | 默认值         | 描述                                             |
+| ------------------- | ----------------------------- | -------------- | ------------------------------------------------ |
+| labelPosition       | String                        | 'right'        | 表单项标签的位置 'left', 'right', 'top'          |
+| buttonAlign         | String                        | 'right'        | 按钮对齐方式，可选 'start' / 'center' / 'right'  |
+| row                 | Object                        | { gutter: 18 } | 透传给 el-row 的配置（gutter / justify / align） |
+| col                 | Object                        | { span: 24 }   | 全局默认列配置，透传给每个字段的 el-col          |
+| buttonCol           | `false` \| Object \| `'auto'` | false          | 按钮列配置，见「栅格布局」                       |
+| submitButtonOptions | Object                        | -              | 提交按钮的配置                                   |
+| resetButtonOptions  | Object                        | -              | 重置按钮的配置                                   |
+| cancelButtonOptions | Object                        | -              | 取消按钮的配置                                   |
+
+> 需要给表单根节点添加自定义样式时，直接在组件上写 `class` 即可（类名会落到 `el-form` 的根元素上）。
 
 ### submitButtonOptions 配置
 
@@ -75,6 +79,114 @@
 | disabled   | Boolean | false  | 按钮是否禁用                  |
 | 其他 props | -       | -      | 见 Element Plus               |
 
+## 栅格布局
+
+`NeonForm` 的布局由 Element Plus 的 `el-row` / `el-col` 栅格系统驱动，不再依赖 UnoCSS 的 `grid-cols-*`。通过 `commonConfig.row`、`commonConfig.col`、`commonConfig.buttonCol` 以及表单项级的 `item.col`，即可控制每行显示几列。
+
+| 配置        | 类型                          | 默认值         | 说明                                        |
+| ----------- | ----------------------------- | -------------- | ------------------------------------------- |
+| row         | Object                        | { gutter: 18 } | 透传给 el-row（gutter / justify / align）   |
+| col         | Object                        | { span: 24 }   | 全局默认列配置，透传给每个字段的 el-col     |
+| buttonCol   | `false` \| Object \| `'auto'` | `false`        | 按钮列配置，见下方                          |
+| buttonAlign | String                        | 'right'        | 按钮对齐，可选 'start' / 'center' / 'right' |
+
+### 每行多列
+
+`col` 使用 Element Plus 的 24 等分栅格，`span` 表示字段占据的份数。默认 `{ span: 24 }` 即每行一列；改为 `{ span: 12 }` 即每行两列，配合断点即可实现响应式：
+
+```js
+const commonConfig = {
+    col: { span: 24, md: 12, lg: 8 },
+}
+```
+
+单个字段可用 `item.col` 覆盖全局配置，合并规则为 `{ ...commonConfig.col, ...item.col }`：
+
+```js
+const schema = [
+    { label: '用户名', key: 'username', type: 'input', col: { span: 24 } },
+    { label: '邮箱', key: 'email', type: 'input' },
+]
+```
+
+### 按钮列 buttonCol
+
+- `false` / 不传（默认）：按钮独占一行，等价于 `el-col :span="24"`。
+
+```js
+const commonConfig = { buttonCol: false }
+```
+
+- 对象：整体透传给按钮所在的 `el-col`，可直接使用 `el-col` 的原生属性，如 `span`、`offset`：
+
+```js
+const commonConfig = { buttonCol: { span: 8, offset: 16 } }
+```
+
+- `'auto'`：按钮并入最后一行并吃掉剩余空间（内部使用 `flex: 1 1 auto`），若最后一行已被占满则自动换行：
+
+```js
+const commonConfig = { buttonCol: 'auto' }
+```
+
+### 按钮对齐 buttonAlign
+
+`buttonAlign` 控制按钮在自身容器内的水平对齐，可选 `'start'` / `'center'` / `'right'`，默认 `'right'`，分别映射为 `justify-start` / `justify-center` / `justify-end`：
+
+```js
+const commonConfig = { buttonAlign: 'center' }
+```
+
+
+### 注意事项
+
+- **列数受 24 等分栅格限制**：每行只能取 24 的约数，即 1、2、3、4、6、8、12、24 列，无法实现 5、7、9 等列数。
+- **断点使用 Element Plus 的**，与 UnoCSS 不同：Element Plus 为 `sm` 768px / `md` 992px / `lg` 1200px / `xl` 1920px；UnoCSS presetWind3 为 `sm` 640px / `md` 768px / `lg` 1024px / `xl` 1280px / `2xl` 1536px。因此 `:md="12"` 指的是 Element Plus 的 992px。
+- **不要再用 `grid-cols-*`**：`.neon-form` 已不再是 `display: grid`，在组件上书写 `grid-cols-*` 不会生效，请改用上述 `col` / `buttonCol` 配置。
+
+### 完整示例
+
+```vue
+<template>
+    <NeonForm
+        v-model="formValues"
+        :schema="formSchema"
+        :commonConfig="formConfig"
+        @submit="handleSubmit" />
+</template>
+
+<script setup>
+import { ref } from 'vue'
+
+const formValues = ref({
+    username: '',
+    email: '',
+    phone: '',
+    remark: '',
+})
+
+const formSchema = ref([
+    { label: '用户名', key: 'username', type: 'input' },
+    { label: '邮箱', key: 'email', type: 'input' },
+    { label: '手机号', key: 'phone', type: 'input' },
+    // 单独覆盖：该字段始终独占一行
+    { label: '备注', key: 'remark', type: 'input', col: { span: 24 } },
+])
+
+const formConfig = ref({
+    // 中等屏幕起每行两列，大屏每行三列
+    col: { span: 24, md: 12, lg: 8 },
+    // 按钮并入最后一行并占满剩余空间
+    buttonCol: 'auto',
+    buttonAlign: 'right',
+})
+
+const handleSubmit = (data) => {
+    console.log('提交数据:', data)
+}
+</script>
+```
+
 ## Schema 配置
 
 每个表单项的配置对象包含以下属性：
@@ -85,6 +197,7 @@
 | key    | String  | 表单项的唯一标识（字段名）                                                                                                                                                                                           |
 | type   | String  | 表单项的类型, 默认 'input', 可选值: 'input', 'number', 'select', 'selectV2', 'radio', 'checkbox', 'date', 'time', 'timeSelect', 'autocomplete', 'cascader', 'inputTag', mention , 'rate', 'slider', 'switch', 'tree' |
 | style  | Object  | 表单项的样式                                                                                                                                                                                                         |
+| col    | Object  | 该字段的列配置，覆盖 commonConfig.col（详见「栅格布局」）                                                                                                                                                            |
 | rules  | Array   | 表单项的验证规则                                                                                                                                                                                                     |
 | help   | String  | 表单项的帮助提示信息                                                                                                                                                                                                 |
 | hidden | Boolean | 是否隐藏该表单项                                                                                                                                                                                                     |
@@ -101,14 +214,14 @@
 
 ## 方法
 
-| 方法名         | 说明                                                 | 类型     |
-| -------------- | ---------------------------------------------------- | -------- |
-| validate       | 任一表单项被校验后触发                               | Function |
-| validateFields | 验证表单某一些字段                                   | Array    |
-| resetFields    | 对该表单项进行重置，将其值重置为初始值并移除校验结果 | Function |
-| clearValidate  | 移除该表单项的校验结果                               | Function |
-| setState       | 设置表单组件的状态                                   | Object   |
-| getValues      | 获取表单数据                                         | Object   |
+| 方法名         | 说明                                                       | 返回值   |
+| -------------- | ---------------------------------------------------------- | -------- |
+| validate       | 校验整个表单，可传入 Element Plus 的回调                   | Promise  |
+| validateField  | 校验指定的若干字段，参数为字段名或字段名数组               | Promise  |
+| resetFields    | 重置表单，将值恢复为初始值并移除校验结果                   | -        |
+| clearValidate  | 移除表单的校验结果                                         | -        |
+| setState       | 动态设置 `commonConfig` 配置                               | -        |
+| getValues      | 获取当前表单数据                                           | Object   |
 
 ## 使用示例
 
@@ -117,7 +230,7 @@
 ```vue
 <template>
     <NeonForm
-        :values="formValues"
+        v-model="formValues"
         :schema="formSchema"
         :commonConfig="formConfig"
         @submit="handleSubmit"
@@ -149,7 +262,7 @@ const formSchema = ref([
 ])
 
 const formConfig = ref({
-    actionWrapperClass: 'flex justify-end',
+    buttonAlign: 'right',
     submitButtonOptions: {
         text: '保存',
     },
@@ -180,10 +293,10 @@ const handleCancel = () => {
 </template>
 
 <script setup>
-import useNeonForm from '@/hooks'
+import { useNeonForm } from '@/hooks'
 
 const [BaseForm, formApi] = useNeonForm({
-    value: formValues,
+    modelValue: formValues,
     schema: formSchema,
     commonConfig: formConfig,
     onSubmit: async (data) => {
