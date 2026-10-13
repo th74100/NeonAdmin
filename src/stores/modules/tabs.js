@@ -49,16 +49,16 @@ const tabsStore = defineStore('tabs', {
                 } else {
                     this.visitedViews.splice(maxTabs, 0, tab)
                 }
-            } else {
-                // 已存在，调整顺序
-                if (index >= maxTabs) {
-                    this.visitedViews.splice(maxTabs - 1, 1)
-                    if (index === -1)
-                        this.visitedViews.splice(maxTabs - 1, 0, tab)
-                }
-                if (index > maxTabs) {
-                    this.visitedViews.splice(index, 1)
-                }
+            } else if (index >= maxTabs) {
+                // 已存在但落在可见容量之外：移到容量内，把被顶掉的标签放回隐藏区，
+                // 不再删除无关标签，也不改变隐藏区既有顺序
+                const [moved] = this.visitedViews.splice(index, 1)
+                const [pushedOut] = this.visitedViews.splice(
+                    maxTabs - 1,
+                    1,
+                    moved,
+                )
+                if (pushedOut) this.affixTabs.push(pushedOut)
             }
         },
 
@@ -148,12 +148,13 @@ const tabsStore = defineStore('tabs', {
                     (view) => view.path === tab.path,
                 )
                 if (index !== -1) {
-                    if (index < this.visitedViews.length - 1 && index > 0) {
-                        const lastView = this.visitedViews.pop()
-                        this.affixTabs.unshift(lastView)
-                    } else if (index === this.visitedViews.length - 1) {
+                    // 收敛到 maxTabs，并让被挤出的标签排到隐藏区末尾
+                    if (index === this.visitedViews.length - 1) {
                         const prevView = this.visitedViews.splice(index - 1, 1)
-                        this.affixTabs.unshift(prevView[0])
+                        this.affixTabs.push(prevView[0])
+                    } else {
+                        const lastView = this.visitedViews.pop()
+                        this.affixTabs.push(lastView)
                     }
                 }
             }
