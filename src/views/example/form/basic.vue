@@ -656,7 +656,7 @@ const commonConfig = computed(() => ({
     labelWidth: '110px',
     labelPosition: formSize.value.labelPosition,
     size: formSize.value.size,
-    wrapperClass: 'm-[15px] lg:grid-cols-2 xl:grid-cols-3',
+    col: { span: 24, md: 12, lg: 8 },
 }))
 
 const [BaseForm, formApi] = useNeonForm({
@@ -668,4 +668,5 @@ const [BaseForm, formApi] = useNeonForm({
         console.log(formData)
     },
 })
+
 </script>

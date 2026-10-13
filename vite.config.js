@@ -5,6 +5,7 @@ import UnoCSS from 'unocss/vite'
 import autoprefixer from 'autoprefixer'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
+import viteCompression from 'vite-plugin-compression'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
@@ -62,6 +63,9 @@ export default defineConfig(({ mode }) => {
                     'typescript',
                 ],
             }),
+            viteCompression({
+                algorithm: 'brotliCompress',
+            }),
         ],
         resolve: {
             // 配置路径别名
@@ -69,7 +73,7 @@ export default defineConfig(({ mode }) => {
                 '@': path.resolve('./src'),
                 '~': path.resolve('./src/views'),
             },
-            extensions: ['.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
+            extensions: ['.js', '.vue', '.mjs', '.ts'],
             mainFiles: ['index'],
         },
         css: {
@@ -146,39 +150,16 @@ export default defineConfig(({ mode }) => {
                         }
                         return 'assets/[hash].[ext]'
                     },
-                    experimentalMinChunkSize: 50 * 1024, // 60kb
-                    manualChunks: {
-                        vendor: [
-                            'vue',
-                            'vue-router',
-                            '@vueuse/core',
-                            'pinia',
-                            'pinia-plugin-persistedstate',
-                            'axios',
-                            'crypto-js',
-                            'dayjs',
-                            'nprogress',
-                            'markdown-it',
-                        ],
-                        element: ['element-plus'],
-                        elementIcons: ['@element-plus/icons-vue'],
-                        wangeditor: ['@wangeditor/editor-for-vue'],
-                        mdeditor: ['@kangc/v-md-editor'],
-                    },
+                    experimentalMinChunkSize: 80 * 1024,
                 },
             },
         },
         optimizeDeps: {
-            include: ['vue', 'vue-router', 'element-plus'],
+            include: ['vue', 'vue-router'],
         },
         server: {
             port: env.VITE_APP_PORT || 3000,
             host: '0.0.0.0', // 允许本机IP访问 0.0.0.0
-            hmr: true,
-            watch: {
-                // 确保监视index.vue文件
-                ignored: ['!**/index.vue'],
-            },
             proxy: {
                 '/dev-api': {
                     target: env.VITE_APP_BASE_URL,

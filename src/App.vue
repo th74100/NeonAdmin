@@ -17,21 +17,21 @@ const globalStore = useGlobalsStore()
 
 const handleLoading = () => {
     const loading = document.querySelector('#preloader')
-    if (loading) {
-        loading.classList.add('h-loading')
-        loading.addEventListener(
-            'transitionend',
-            () => {
-                loading.remove()
-            },
-            {
-                once: false,
-            },
-        )
+    if (!loading) return
+
+    let removeTimer = null
+    const removeLoading = () => {
+        clearTimeout(removeTimer)
+        removeTimer = null
+        loading.remove()
     }
+
+    loading.addEventListener('transitionend', removeLoading, { once: true })
+    loading.classList.add('h-loading')
+    removeTimer = setTimeout(removeLoading, 1000)
 }
 
-onMounted(() => {
+onMounted(async () => {
     handleLoading()
 
     tool.initTheme(globalStore)

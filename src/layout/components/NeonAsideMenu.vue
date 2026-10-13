@@ -38,7 +38,7 @@
 </template>
 
 <script setup>
-import NeonAsideMenu from '@/components/NeonAsideMenu'
+import NeonAsideMenu from '@/layout/components/NeonAsideMenu'
 import useGlobalStore from '@/stores/modules/global'
 
 const globalStore = useGlobalStore()

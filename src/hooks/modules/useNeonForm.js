@@ -28,7 +28,7 @@ export const useNeonForm = (props) => {
             formRef.value?.clearValidate()
         },
         validateField(...args) {
-            formRef.value?.validateField(args)
+            formRef.value?.validateField(...args)
         },
         setState(opts) {
             formRef.value?.setState(opts)

@@ -1,7 +1,7 @@
 <template>
     <neon-container>
         <template #header>
-            <h1 class="mb-2 font-bold">动态表单</h1>
+            <h3 class="mb-2 font-bold">动态表单</h3>
             <span class="text-sm text-[var(--ne-foreground)]">
                 表单组件动态联动示例，包含了常用的场景。增删改，本质上是修改schema。
             </span>
@@ -11,7 +11,9 @@
                 表单动态联动示例
             </h2>
         </div>
-        <neon-form-builder />
+        <div class="m-[15px]">
+            <neon-form-builder />
+        </div>
     </neon-container>
 </template>
 
@@ -135,7 +137,7 @@ const [NeonFormBuilder, formApi] = useNeonForm({
     modelValue: formState,
     schema,
     commonConfig: {
-        wrapperClass: 'm-[15px] lg:grid-cols-2 xl:grid-cols-4',
+        col: { span: 24, md: 12, lg: 6 },
     },
     onSubmit: async (formData) => {
         await formApi.validate()

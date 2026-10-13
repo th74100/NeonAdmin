@@ -34,7 +34,7 @@
                                 type="primary"
                                 :loading="isLoading"
                                 native-type="submit"
-                                class="w-full">
+                                class="mt-5 w-full">
                                 登录
                             </el-button>
                         </template>
@@ -113,7 +113,6 @@ const [BaseForm, formApi] = useNeonForm({
     schema,
     commonConfig: {
         size: 'large',
-        actionWrapperClass: 'w-full mt-5',
         resetButtonOptions: {
             show: false,
         },

@@ -152,9 +152,10 @@ import { $notification, timeFix } from '@/utils'
 import useGlobalStore from '@/stores/modules/global'
 import useAuthStore from '@/stores/modules/auth'
 import useKeepliveStore from '@/stores/modules/keeplive'
-import NeonHeader from './components/NeonHeader.vue'
-import NeonUser from './components/NeonUser.vue'
-import NeonTabs from './components/NeonTabs.vue'
+import NeonHeader from './components/NeonHeader'
+import NeonUser from './components/NeonUser'
+import NeonTabs from './components/NeonTabs'
+import NeonAsideMenu from './components/NeonAsideMenu'
 
 const { isRouterAlive } = inject('reload')
 const router = useRouter()

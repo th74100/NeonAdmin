@@ -1,73 +1,71 @@
 <template>
     <div
-        class="flex items-center h-[38px] border-b border-default bg-[var(--ne-header)] transition-all">
+        class="flex items-center h-[38px] border-b border-default bg-[var(--ne-header)]">
         <div
             ref="tabBox"
             class="flex flex-1 pt-[3px] h-full overflow-hidden">
             <div
                 ref="tabList"
                 class="neon-tabs-content flex w-max h-full pr-6 overflow-hidden">
-                <transition-group name="fade-left">
-                    <div
-                        v-for="item in visitedViews"
-                        :key="item.path"
-                        :class="[
-                            { 'is-active': item.path === activeTab },
-                            { 'affix-tab': item.fixate },
-                        ]"
-                        @click="handleChangeTab(item.path)"
-                        @contextmenu.prevent="handleContextMenu($event, item)"
-                        class="neon-tabs__item draggable shrink-0 relative -mr-3 flex items-center h-full select-none cursor-pointer">
-                        <div class="relative wh-full px-1">
+                <div
+                    v-for="item in visitedViews"
+                    :key="item.path"
+                    :class="[
+                        { 'is-active': item.path === activeTab },
+                        { 'affix-tab': item.fixate },
+                    ]"
+                    @click="handleChangeTab(item.path)"
+                    @contextmenu.prevent="handleContextMenu($event, item)"
+                    class="neon-tabs__item draggable shrink-0 relative -mr-3 flex items-center h-full select-none cursor-pointer">
+                    <div class="relative wh-full px-1">
+                        <div
+                            class="neon-tabs__background absolute z-[1] wh-full px-[6px]">
                             <div
-                                class="neon-tabs__background absolute z-[1] wh-full px-[6px] transition-opacity duration-150">
-                                <div
-                                    class="neon-tabs__background-content h-full rounded-tl-md rounded-tr-md duration-150" />
-                                <NeonSvg
-                                    name="ne-corner-before"
-                                    width="7"
-                                    height="7"
-                                    class="neon-tabs__background-before absolute bottom-0 left-[-1px] fill-transparent transition-all duration-150" />
-                                <NeonSvg
-                                    name="ne-corner-after"
-                                    width="7"
-                                    height="7"
-                                    class="neon-tabs__background-after absolute bottom-0 right-[-1px] fill-transparent transition-all duration-150" />
-                            </div>
-                            <div
-                                v-if="visitedViews.length > 1"
-                                class="absolute right-[10px] top-1/2 z-[3] size-4 translate-y-[-50%]">
-                                <neon-fixed
-                                    v-if="item.fixate"
-                                    class="mt-[2px] size-3.2 cursor-pointer rounded-full transition-all"
-                                    @click.stop="item.fixate = false" />
-                                <neon-close
-                                    v-else
-                                    @click.stop="removeTab(item.path)"
-                                    class="neon-tabs__close mt-[2px] size-3 cursor-pointer rounded-full transition-all" />
-                            </div>
-                            <div
-                                class="neon-tabs__name"
-                                :class="{
-                                    'pr-4': visitedViews.length > 1,
-                                }">
-                                <el-icon
-                                    v-if="item.meta?.icon"
-                                    :size="15">
-                                    <component :is="item.meta.icon" />
-                                </el-icon>
-                                <el-icon
-                                    v-else
-                                    :size="15">
-                                    <neon-activity />
-                                </el-icon>
-                                <span class="text-nowrap">
-                                    {{ item.meta?.title }}
-                                </span>
-                            </div>
+                                class="neon-tabs__background-content h-full rounded-tl-md rounded-tr-md duration-150" />
+                            <NeonSvg
+                                name="ne-corner-before"
+                                width="8px"
+                                height="8px"
+                                class="neon-tabs__background-before -left-[1px]" />
+                            <NeonSvg
+                                name="ne-corner-after"
+                                width="8px"
+                                height="8px"
+                                class="neon-tabs__background-after -right-[1px]" />
+                        </div>
+                        <div
+                            v-if="visitedViews.length > 1"
+                            class="absolute right-[10px] top-1/2 z-[3] size-4 -translate-y-[50%]">
+                            <neon-fixed
+                                v-if="item.fixate"
+                                class="mt-[2px] size-3.2 cursor-pointer rounded-full transition-all"
+                                @click.stop="item.fixate = false" />
+                            <neon-close
+                                v-else
+                                @click.stop="removeTab(item.path)"
+                                class="neon-tabs__close mt-[2px] size-3 cursor-pointer rounded-full transition-all" />
+                        </div>
+                        <div
+                            class="neon-tabs__name"
+                            :class="{
+                                'pr-4': visitedViews.length > 1,
+                            }">
+                            <el-icon
+                                v-if="item.meta?.icon"
+                                :size="15">
+                                <component :is="item.meta?.icon" />
+                            </el-icon>
+                            <el-icon
+                                v-else
+                                :size="15">
+                                <neon-activity />
+                            </el-icon>
+                            <span class="text-nowrap">
+                                {{ item.meta?.title }}
+                            </span>
                         </div>
                     </div>
-                </transition-group>
+                </div>
             </div>
         </div>
         <div
@@ -214,7 +212,7 @@ import {
     inject,
     onMounted,
 } from 'vue'
-import { useElementSize, useResizeObserver, useDebounceFn } from '@vueuse/core'
+import { useResizeObserver, useDebounceFn } from '@vueuse/core'
 import { useRouter, useRoute } from 'vue-router'
 import Sortable from 'sortablejs'
 import { flatTree, tool } from '@/utils'
@@ -244,11 +242,48 @@ const affixTabs = computed(() => tabsStore.getAffixTabs)
 const tabBoxEl = useTemplateRef('tabBox')
 const tabListEl = useTemplateRef('tabList')
 
+/** tab 最小宽度，与样式 min-w-[120px] 保持一致，仅用于首屏无 tab 可测时的兜底估算 */
+const TAB_MIN_WIDTH = 120
+
 /** 计算可以放下多少个tab */
 const getVisibleLength = () => {
-    const { width } = useElementSize(tabBoxEl)
-    const minWidth = 120
-    visibleLength.value = Math.floor(width.value / minWidth)
+    const box = tabBoxEl.value
+    const list = tabListEl.value
+    if (!box || !list) return
+
+    // 可用宽度 = 容器宽度 - tabList 的右内边距
+    const paddingRight = parseFloat(getComputedStyle(list).paddingRight) || 0
+    const available = box.clientWidth - paddingRight
+    if (available <= 0) return
+
+    const items = [...list.querySelectorAll('.neon-tabs__item')]
+
+    // 首屏还没有渲染出 tab，退化为按最小宽度估算
+    if (!items.length) {
+        visibleLength.value = Math.max(
+            1,
+            Math.floor(available / TAB_MIN_WIDTH),
+        )
+        return
+    }
+
+    // 以第一个 tab 的左边缘为基准，按真实占位宽度累加（含相邻 tab 的负边距）
+    const startLeft = items[0].getBoundingClientRect().left
+    let count = 0
+
+    for (const item of items) {
+        if (item.getBoundingClientRect().right - startLeft > available) break
+        count += 1
+    }
+
+    // 已渲染的 tab 全部放得下时，用平均宽度估算还能再容纳几个
+    if (count === items.length && count > 0) {
+        const totalWidth =
+            items[count - 1].getBoundingClientRect().right - startLeft
+        count = Math.floor(available / (totalWidth / count))
+    }
+
+    visibleLength.value = Math.max(1, count)
 }
 
 /** 获取路由 */
@@ -299,6 +334,10 @@ const handleChangeTab = (path) => {
     setTimeout(() => {
         dropdowntrigger.value = 'hover'
     }, 10)
+
+    // 点击的是隐藏区标签时，与可见区末位标签做位置对换
+    tabsStore.activateAffixTab(path)
+
     router.push(path)
 }
 
@@ -509,6 +548,13 @@ onMounted(() => {
         getVisibleLength()
         initTabs()
         setActiveTab(route.fullPath)
+
+        // initTabs 之后 DOM 才出现真实 tab，再测一次容量并收敛标签数量，
+        // 避免沿用首屏无 tab 可测时的兜底估算值
+        nextTick(() => {
+            getVisibleLength()
+            updateTab()
+        })
     })
 
     useResizeObserver(tabBoxEl, debounceFn)
@@ -523,6 +569,10 @@ onMounted(() => {
         @apply min-w-[120px];
         .neon-tabs__name {
             @apply relative fx-center gap-[5px] h-full pl-1 mx-[14px] z-2 text-sm dark:text-[var(--ne-foreground)] duration-150;
+        }
+        .neon-tabs__background-before,
+        .neon-tabs__background-after {
+            @apply absolute bottom-0 fill-transparent transition-all duration-150;
         }
         &.is-active {
             .neon-tabs__background-content {
